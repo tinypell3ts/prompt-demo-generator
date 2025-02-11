@@ -1,0 +1,98 @@
+[
+  {
+    "role": "assistant",
+    "message": {
+      "type": "text",
+      "content": "Welcome to the PSG Community! How can I help you today?"
+    }
+  },
+  {
+    "role": "user",
+    "message": {
+      "type": "text",
+      "content": "I'm in Paris and would love to see a game!"
+    }
+  },
+  {
+    "role": "assistant",
+    "message": {
+      "type": "text",
+      "content": "Great, I'll check for available tickets and get back to you."
+    }
+  },
+  {
+    "role": "assistant",
+    "message": {
+      "type": "component",
+      "componentName": "TicketPurchase",
+      "props": {
+        "title": "PSG vs Real Madrid Ticket",
+        "description": "Experience the excitement of the upcoming PSG vs Real Madrid match! Premium seat in Parc des Princes stadium.",
+        "price": 150
+      }
+    }
+  },
+  {
+    "role": "assistant",
+    "message": {
+      "type": "text",
+      "content": "Okay, to reward users for joining your Discord server, let's set up a reward. What kind of reward would you like to offer?"
+    },
+    "rewardOptions": ["Points", "$OPEN"]
+  },
+  {
+    "role": "user",
+    "message": {
+      "type": "text",
+      "content": "I'll reward with: $OPEN"
+    }
+  },
+  {
+    "role": "assistant",
+    "message": {
+      "type": "text",
+      "content": "Great! And how many $OPEN tokens should they receive for joining?"
+    }
+  },
+  {
+    "role": "user",
+    "message": {
+      "type": "text",
+      "content": "50"
+    }
+  },
+  {
+    "role": "assistant",
+    "message": {
+      "type": "component",
+      "componentName": "RewardSummary",
+      "props": {
+        "taskName": "Join Discord Server",
+        "rewardAmount": 50,
+        "currency": "$OPEN"
+      }
+    }
+  },
+  {
+    "role": "assistant",
+    "message": {
+      "type": "text",
+      "content": "Does this summary look correct? (Type 'Yes' to confirm)"
+    }
+  },
+  {
+    "role": "user",
+    "message": {
+      "type": "text",
+      "content": "Yes"
+    }
+  },
+  {
+    "role": "assistant",
+    "message": {
+      "type": "text",
+      "content": "Excellent! Task creation complete. Your users can now earn rewards for joining your Discord server. What would you like to do next?"
+    },
+    "tasks": ["Join discord server", "Create a community in community platform", "Send first reward"]
+  }
+]
