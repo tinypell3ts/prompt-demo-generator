@@ -1,98 +1,120 @@
 [
   {
     "role": "assistant",
-    "message": {
-      "type": "text",
-      "content": "Welcome to the PSG Community! How can I help you today?"
-    }
-  },
-  {
-    "role": "user",
-    "message": {
-      "type": "text",
-      "content": "I'm in Paris and would love to see a game!"
-    }
-  },
-  {
-    "role": "assistant",
-    "message": {
-      "type": "text",
-      "content": "Great, I'll check for available tickets and get back to you."
-    }
-  },
-  {
-    "role": "assistant",
-    "message": {
-      "type": "component",
-      "componentName": "TicketPurchase",
-      "props": {
-        "title": "PSG vs Real Madrid Ticket",
-        "description": "Experience the excitement of the upcoming PSG vs Real Madrid match! Premium seat in Parc des Princes stadium.",
-        "price": 150
+    "messages": [
+      {
+        "type": "text",
+        "content": "Welcome to the Open Format Community! Let's help you find the right contribution."
+      },
+      {
+        "type": "text",
+        "content": "First, tell me about your programming experience and skills."
       }
-    }
-  },
-  {
-    "role": "assistant",
-    "message": {
-      "type": "text",
-      "content": "Okay, to reward users for joining your Discord server, let's set up a reward. What kind of reward would you like to offer?"
-    },
-    "rewardOptions": ["Points", "$OPEN"]
+    ]
   },
   {
     "role": "user",
     "message": {
       "type": "text",
-      "content": "I'll reward with: $OPEN"
+      "content": "I'm a JavaScript developer with 2 years of experience, mostly with React and Node.js"
     }
   },
   {
     "role": "assistant",
-    "message": {
-      "type": "text",
-      "content": "Great! And how many $OPEN tokens should they receive for joining?"
-    }
-  },
-  {
-    "role": "user",
-    "message": {
-      "type": "text",
-      "content": "50"
-    }
-  },
-  {
-    "role": "assistant",
-    "message": {
-      "type": "component",
-      "componentName": "RewardSummary",
-      "props": {
-        "taskName": "Join Discord Server",
-        "rewardAmount": 50,
-        "currency": "$OPEN"
+    "messages": [
+      {
+        "type": "text",
+        "content": "Great! I can see you have merged code into other open-source projects like ElizaOS, HeroSpace & react."
+      },
+      {
+        "type": "text",
+        "content": "Do you have any blockchain experience?"
       }
-    }
-  },
-  {
-    "role": "assistant",
-    "message": {
-      "type": "text",
-      "content": "Does this summary look correct? (Type 'Yes' to confirm)"
-    }
+    ]
   },
   {
     "role": "user",
     "message": {
       "type": "text",
-      "content": "Yes"
+      "content": "I have some experience with Ethereum and Solidity"
     }
   },
   {
     "role": "assistant",
+    "messages": [
+      {
+        "type": "text",
+        "content": "Based on your skills, I've found some more intermediate tasks you might be interested in."
+      },
+      {
+        "type": "component",
+        "componentName": "TaskList",
+        "props": {
+          "tasks": [
+            {
+              "id": "issue-1",
+              "title": "Implement Cross-Chain Token Bridge Functionality",
+              "description": "Develop a smart contract module for bridging ERC-20 tokens between Ethereum and Polygon networks with security optimizations",
+              "difficulty": "Intermediate",
+              "amount": 250,
+              "currency": "USDC",
+              "repository": "openformat/blockchain-infrastructure",
+              "issueLink": "https://github.com/openformat/blockchain-infrastructure/issues/789"
+            },
+            {
+              "id": "issue-2",
+              "title": "Enhance AI Agent's Contextual Memory Retrieval",
+              "description": "Implement advanced embedding-based semantic search for improving RAG (Retrieval-Augmented Generation) context window precision",
+              "difficulty": "Intermediate",
+              "amount": 300,
+              "currency": "USDC",
+              "repository": "openformat/ai-agents",
+              "issueLink": "https://github.com/openformat/ai-agents/issues/234"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "messages": [
+      {
+        "type": "text",
+        "content": "Excellent choice! Once you submit a pull request for the Implement Cross-Chain Token Bridge Functionality task, we'll review and reward you."
+      }
+    ]
+  },
+  {
+    "role": "user",
     "message": {
       "type": "text",
-      "content": "Excellent! Task creation complete. Your users can now earn rewards for joining your Discord server. What would you like to do next?"
-    },
-    "tasks": ["Join discord server", "Create a community in community platform", "Send first reward"]
+      "content": "I've submitted the pull request"
+    }
+  },
+  {
+    "role": "assistant",
+    "messages": [
+      {
+        "type": "text",
+        "content": "Great job! I've reviewed your pull request, looks good!. You've earned 250 USDC for your contribution. Thank you for your hard work!"
+      },
+      {
+        "type": "component",
+        "componentName": "RewardReceipt",
+        "props": {
+          "hash": "Transaction Receipt",
+          "from": "0x33...A6Ea",
+          "to": "andy.eth",
+          "timestamp": "6 sec ago",
+          "amount": 250,
+          "currency": "USDC"
+        }
+      },
+      {
+        "type": "text",
+        "content": "Want to see some more tasks?"
+      }
+    ]
   }
 ]

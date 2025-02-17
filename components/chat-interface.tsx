@@ -23,12 +23,16 @@ interface Message {
 const componentMap = {
   RewardSummary: lazy(() => import("@/components/rewards-summary")),
   TicketPurchase: lazy(() => import("@/components/ticket-purchase")),
+  TweetShare: lazy(() => import("@/components/tweet-share")),
+  TaskList: lazy(() => import("@/components/task-list")),
+  RewardReceipt: lazy(() => import("@/components/reward-receipt")),
 };
 
 const DynamicComponent: React.FC<{
   componentName: string;
   props: any;
-}> = ({ componentName, props }) => {
+  onActionComplete?: () => void;
+}> = ({ componentName, props, onActionComplete }) => {
   console.log("🎯 Rendering Dynamic Component:", componentName);
   console.log("🧩 Component Props:", JSON.stringify(props, null, 2));
 
@@ -41,7 +45,7 @@ const DynamicComponent: React.FC<{
 
   return (
     <Suspense fallback={<LoadingSpinner />}>
-      <Component {...props} />
+      <Component {...props} onActionComplete={onActionComplete} />
     </Suspense>
   );
 };
@@ -54,17 +58,65 @@ export default function ChatInterface() {
   const [isLoading, setIsLoading] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = useCallback(() => {
-    messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "end",
-    });
+    try {
+      // Log current state for debugging
+      console.log("Scroll to bottom called");
+      console.log("Messages container:", messagesContainerRef.current);
+      console.log("Messages end ref:", messagesEndRef.current);
+      console.log("Current messages:", chatMessages.length);
+
+      // Multiple aggressive scrolling techniques
+      if (messagesContainerRef.current) {
+        // Method 1: Direct scrollTop
+        messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+
+        // Method 2: Scroll into view of the last element
+        const lastMessage = messagesContainerRef.current.lastElementChild;
+        if (lastMessage) {
+          lastMessage.scrollIntoView({
+            behavior: "smooth",
+            block: "end",
+          });
+        }
+      }
+
+      // Method 3: If end ref exists, scroll into view
+      if (messagesEndRef.current) {
+        messagesEndRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "end",
+        });
+      }
+    } catch (error) {
+      console.error("Scrolling error:", error);
+    }
   }, [chatMessages]);
 
   useEffect(() => {
-    scrollToBottom();
-  }, [scrollToBottom]);
+    // Multiple attempts to scroll
+    const scrollAttempts = [
+      () => scrollToBottom(),
+      () => setTimeout(scrollToBottom, 100),
+      () => setTimeout(scrollToBottom, 300),
+    ];
+
+    // Run multiple scroll attempts
+    for (const attempt of scrollAttempts) {
+      attempt();
+    }
+
+    // Cleanup function
+    return () => {
+      for (const attempt of scrollAttempts) {
+        if (typeof attempt === "function") {
+          clearTimeout(attempt as any);
+        }
+      }
+    };
+  }, [chatMessages, scrollToBottom]);
 
   useEffect(() => {
     const loadInteractions = async () => {
@@ -86,19 +138,22 @@ export default function ChatInterface() {
   useEffect(() => {
     if (interactions.length > 0 && currentInteractionIndex === 0) {
       if (interactions[0].role === "assistant") {
-        const initialMessage: Message = {
-          id: 0,
+        // Handle multiple messages for initial interaction
+        const initialMessages = interactions[0].messages || [interactions[0].message];
+        const formattedInitialMessages = initialMessages.map((message, index) => ({
+          id: index,
           type: "assistant",
-          text: interactions[0].message.content || "Initial Component Message",
-          displayedText: interactions[0].message.content || "Initial Component Message",
+          text: message.content || "Initial Component Message",
+          displayedText: message.content || "Initial Component Message",
           message: {
-            type: interactions[0].message.type,
-            content: interactions[0].message.content,
-            componentName: interactions[0].message.componentName,
-            props: interactions[0].message.props,
+            type: message.type,
+            content: message.content,
+            componentName: message.componentName,
+            props: message.props,
           },
-        };
-        setChatMessages([initialMessage]);
+        }));
+
+        setChatMessages(formattedInitialMessages);
         setCurrentInteractionIndex(1);
       }
     }
@@ -127,28 +182,31 @@ export default function ChatInterface() {
       setIsLoading(true);
 
       // 2. Wait for 2 seconds
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // 3. Find and Add the next Assistant response from JSON
-      let nextAssistantMessage = null;
+      let nextAssistantMessages = null;
 
       // Find the next assistant message starting from the current interaction index
       for (let i = currentInteractionIndex; i < interactions.length; i++) {
         const interaction = interactions[i];
 
         if (interaction.role === "assistant") {
-          nextAssistantMessage = {
-            id: chatMessages.length + 1,
+          // Handle multiple messages in an interaction
+          const messagesArray = interaction.messages || [interaction.message];
+
+          nextAssistantMessages = messagesArray.map((message, index) => ({
+            id: chatMessages.length + index + 1,
             type: "assistant",
-            text: interaction.message.content || "Component Message",
-            displayedText: interaction.message.content || "Component Message",
+            text: message.content || "Component Message",
+            displayedText: message.content || "Component Message",
             message: {
-              type: interaction.message.type,
-              content: interaction.message.content,
-              componentName: interaction.message.componentName,
-              props: interaction.message.props,
+              type: message.type,
+              content: message.content,
+              componentName: message.componentName,
+              props: message.props,
             },
-          };
+          }));
 
           // Update the current interaction index
           setCurrentInteractionIndex(i + 1);
@@ -159,8 +217,8 @@ export default function ChatInterface() {
       // Hide loading spinner
       setIsLoading(false);
 
-      if (nextAssistantMessage) {
-        setChatMessages((prevMessages) => [...prevMessages, nextAssistantMessage]);
+      if (nextAssistantMessages) {
+        setChatMessages((prevMessages) => [...prevMessages, ...nextAssistantMessages]);
       } else {
         console.log("End of conversation.");
       }
@@ -168,11 +226,63 @@ export default function ChatInterface() {
     [inputValue, interactions, currentInteractionIndex, chatMessages]
   );
 
+  const handleActionComplete = useCallback(() => {
+    // Trigger next interaction
+    const handleNextInteraction = async () => {
+      // Show loading spinner
+      setIsLoading(true);
+
+      // Wait a moment to simulate processing
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Find and Add the next Assistant response from JSON
+      let nextAssistantMessages = null;
+
+      // Find the next assistant message starting from the current interaction index
+      for (let i = currentInteractionIndex; i < interactions.length; i++) {
+        const interaction = interactions[i];
+
+        if (interaction.role === "assistant") {
+          // Handle multiple messages in an interaction
+          const messagesArray = interaction.messages || [interaction.message];
+
+          nextAssistantMessages = messagesArray.map((message, index) => ({
+            id: chatMessages.length + index + 1,
+            type: "assistant",
+            text: message.content || "Component Message",
+            displayedText: message.content || "Component Message",
+            message: {
+              type: message.type,
+              content: message.content,
+              componentName: message.componentName,
+              props: message.props,
+            },
+          }));
+
+          // Update the current interaction index
+          setCurrentInteractionIndex(i + 1);
+          break;
+        }
+      }
+
+      // Hide loading spinner
+      setIsLoading(false);
+
+      if (nextAssistantMessages) {
+        setChatMessages((prevMessages) => [...prevMessages, ...nextAssistantMessages]);
+      } else {
+        console.log("End of conversation.");
+      }
+    };
+
+    handleNextInteraction();
+  }, [interactions, currentInteractionIndex, chatMessages]);
+
   console.log("Rendering chatMessages:", chatMessages); // <-- LOG 18: Render log
 
   return (
-    <div className="min-h-screen bg-black p-4 flex flex-col items-center justify-center text-white">
-      <Card className="w-full max-w-2xl p-6 bg-[#111111] shadow-xl rounded-xl border-0">
+    <div className="min-h-screen h-screen p-4 flex flex-col items-center justify-center text-white">
+      <Card className="w-full max-w-2xl h-[90%] flex flex-col p-6 bg-[#111111] shadow-xl rounded-xl border-0">
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-[#222222] flex items-center justify-center">
@@ -180,7 +290,7 @@ export default function ChatInterface() {
             </div>
           </div>
         </div>
-        <div className="space-y-4 mb-4 h-[400px] overflow-y-auto">
+        <div ref={messagesContainerRef} className="flex-grow overflow-y-auto space-y-4 mb-4">
           {chatMessages.map((message) => {
             return (
               <div key={message.id} className="space-y-4">
@@ -194,7 +304,11 @@ export default function ChatInterface() {
                       <div className="whitespace-pre-wrap font-sans animate-fade-in">{message.message.content}</div>
                     )}
                     {message.message.type === "component" && (
-                      <DynamicComponent componentName={message.message.componentName} props={message.message.props} />
+                      <DynamicComponent
+                        componentName={message.message.componentName}
+                        props={message.message.props}
+                        onActionComplete={handleActionComplete}
+                      />
                     )}
                   </div>
                 </div>
@@ -204,7 +318,7 @@ export default function ChatInterface() {
           {isLoading && <LoadingSpinner />}
           <div ref={messagesEndRef} />
         </div>
-        <form onSubmit={handleSubmit} className="relative mt-6">
+        <form onSubmit={handleSubmit} className="relative mt-auto">
           <input
             type="text"
             value={inputValue}
@@ -220,7 +334,6 @@ export default function ChatInterface() {
           </Button>
         </form>
       </Card>
-      <p className="text-sm font-bold text-gray-200 mt-4 opacity-80">Powered with ❤️ by Open Format</p>
     </div>
   );
 }
