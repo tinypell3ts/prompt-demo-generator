@@ -14,42 +14,49 @@ interface AgentLogEntry {
   timestamp: string;
 }
 
+interface RawAgentLogEntry {
+  type: "task" | "social" | "reward" | "system" | "interaction";
+  icon?: string;
+  message: string;
+  timestamp?: string;
+}
+
 export default function AgentView() {
   const [agentLogs, setAgentLogs] = useState<AgentLogEntry[]>([]);
 
-  function transformLogEntry(log: any): AgentLogEntry {
-    return {
-      ...log,
-      icon:
-        log.icon === "twitter" ? (
-          <Twitter className="w-4 h-4 text-blue-400" />
-        ) : log.icon === "award" ? (
-          <Award className="w-4 h-4 text-yellow-400" />
-        ) : log.icon === "code" ? (
-          <Code className="w-4 h-4 text-green-400" />
-        ) : log.icon === "globe" ? (
-          <Globe className="w-4 h-4 text-cyan-400" />
-        ) : log.icon === "terminal" ? (
-          <Terminal className="w-4 h-4 text-gray-400" />
-        ) : log.icon === "telegram" ? (
-          <BsTelegram className="w-4 h-4 text-blue-500" />
-        ) : log.icon === "discord" ? (
-          <BsDiscord className="w-4 h-4 text-purple-500" />
-        ) : log.icon === "github" ? (
-          <FaGithub className="w-4 h-4 text-gray-300" />
-        ) : undefined,
-      timestamp: new Date().toLocaleTimeString(),
-    };
-  }
-
-  function generateRandomLog(): AgentLogEntry {
-    const randomLog = logsData[Math.floor(Math.random() * logsData.length)];
-    return transformLogEntry(randomLog);
-  }
-
   useEffect(() => {
+    function transformLogEntry(log: RawAgentLogEntry): AgentLogEntry {
+      return {
+        ...log,
+        icon:
+          log.icon === "twitter" ? (
+            <Twitter className="w-4 h-4 text-blue-400" />
+          ) : log.icon === "award" ? (
+            <Award className="w-4 h-4 text-yellow-400" />
+          ) : log.icon === "code" ? (
+            <Code className="w-4 h-4 text-green-400" />
+          ) : log.icon === "globe" ? (
+            <Globe className="w-4 h-4 text-cyan-400" />
+          ) : log.icon === "terminal" ? (
+            <Terminal className="w-4 h-4 text-gray-400" />
+          ) : log.icon === "telegram" ? (
+            <BsTelegram className="w-4 h-4 text-blue-500" />
+          ) : log.icon === "discord" ? (
+            <BsDiscord className="w-4 h-4 text-purple-500" />
+          ) : log.icon === "github" ? (
+            <FaGithub className="w-4 h-4 text-gray-300" />
+          ) : undefined,
+        timestamp: new Date().toLocaleTimeString(),
+      };
+    }
+
+    function generateRandomLog(): AgentLogEntry {
+      const randomLog = logsData[Math.floor(Math.random() * logsData.length)] as RawAgentLogEntry;
+      return transformLogEntry(randomLog);
+    }
+
     // Start with initial logs (first 4 entries)
-    const initialTransformedLogs = logsData.slice(0, 4).map(transformLogEntry);
+    const initialTransformedLogs = logsData.slice(0, 4).map((log) => transformLogEntry(log as RawAgentLogEntry));
     setAgentLogs(initialTransformedLogs);
 
     // Set up periodic log generation
