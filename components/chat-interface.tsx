@@ -2,6 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Toaster } from "@/components/ui/toaster";
+import { useToast } from "@/hooks/use-toast";
 import { ChevronRight, Settings } from "lucide-react";
 import type { default as React } from "react";
 import { Suspense, lazy, useCallback, useEffect, useRef, useState } from "react";
@@ -36,7 +38,8 @@ const DynamicComponent: React.FC<{
   componentName: string;
   props: any;
   onActionComplete?: () => void;
-}> = ({ componentName, props, onActionComplete }) => {
+  onToastAction?: (message: string, type?: string) => void;
+}> = ({ componentName, props, onActionComplete, onToastAction }) => {
   console.log("🎯 Rendering Dynamic Component:", componentName);
   console.log("🧩 Component Props:", JSON.stringify(props, null, 2));
 
@@ -49,7 +52,7 @@ const DynamicComponent: React.FC<{
 
   return (
     <Suspense fallback={<LoadingSpinner />}>
-      <Component {...props} onActionComplete={onActionComplete} />
+      <Component {...props} onActionComplete={onActionComplete} onToastAction={onToastAction} />
     </Suspense>
   );
 };
@@ -61,24 +64,21 @@ export default function ChatInterface() {
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isProcessingAutoMessages, setIsProcessingAutoMessages] = useState(false);
+  const { toast } = useToast();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = useCallback(() => {
     try {
-      // Log current state for debugging
       console.log("Scroll to bottom called");
       console.log("Messages container:", messagesContainerRef.current);
       console.log("Messages end ref:", messagesEndRef.current);
       console.log("Current messages:", chatMessages.length);
 
-      // Multiple aggressive scrolling techniques
       if (messagesContainerRef.current) {
-        // Method 1: Direct scrollTop
         messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
 
-        // Method 2: Scroll into view of the last element
         const lastMessage = messagesContainerRef.current.lastElementChild;
         if (lastMessage) {
           lastMessage.scrollIntoView({
@@ -88,7 +88,6 @@ export default function ChatInterface() {
         }
       }
 
-      // Method 3: If end ref exists, scroll into view
       if (messagesEndRef.current) {
         messagesEndRef.current.scrollIntoView({
           behavior: "smooth",
@@ -101,19 +100,16 @@ export default function ChatInterface() {
   }, [chatMessages]);
 
   useEffect(() => {
-    // Multiple attempts to scroll
     const scrollAttempts = [
       () => scrollToBottom(),
       () => setTimeout(scrollToBottom, 100),
       () => setTimeout(scrollToBottom, 300),
     ];
 
-    // Run multiple scroll attempts
     for (const attempt of scrollAttempts) {
       attempt();
     }
 
-    // Cleanup function
     return () => {
       for (const attempt of scrollAttempts) {
         if (typeof attempt === "function") {
@@ -134,7 +130,7 @@ export default function ChatInterface() {
         const data = await response.json();
         setInteractions(data);
       } catch (error) {
-        console.error("Could not load mock interactions:", error); // <-- LOG 7: Catch error
+        console.error("Could not load mock interactions:", error);
       }
     };
     loadInteractions();
@@ -143,7 +139,6 @@ export default function ChatInterface() {
   useEffect(() => {
     if (interactions.length > 0 && currentInteractionIndex === 0) {
       if (interactions[0].role === "assistant") {
-        // Handle multiple messages for initial interaction
         const initialMessages = interactions[0].messages || [interactions[0].message];
         const formattedInitialMessages = initialMessages.map((message, index) => ({
           id: index,
@@ -164,31 +159,24 @@ export default function ChatInterface() {
     }
   }, [interactions, currentInteractionIndex]);
 
-  // New function to process consecutive assistant messages
   const processNextAssistantMessages = useCallback(async () => {
     if (isProcessingAutoMessages || isLoading) return;
     
     setIsProcessingAutoMessages(true);
     
-    // Check if the next interaction is an assistant message
     if (currentInteractionIndex < interactions.length && 
         interactions[currentInteractionIndex]?.role === "assistant") {
       
-      // Show loading spinner
       setIsLoading(true);
       
-      // Wait a moment to simulate processing
       await new Promise((resolve) => setTimeout(resolve, 1000));
       
-      // Find and Add the next Assistant response from JSON
       let nextAssistantMessages = null;
       
-      // Find the next assistant message starting from the current interaction index
       for (let i = currentInteractionIndex; i < interactions.length; i++) {
         const interaction = interactions[i];
         
         if (interaction.role === "assistant") {
-          // Handle multiple messages in an interaction
           const messagesArray = interaction.messages || [interaction.message];
           
           nextAssistantMessages = messagesArray.map((message, index) => ({
@@ -204,13 +192,11 @@ export default function ChatInterface() {
             },
           }));
           
-          // Update the current interaction index
           setCurrentInteractionIndex(i + 1);
           break;
         }
       }
       
-      // Hide loading spinner
       setIsLoading(false);
       
       if (nextAssistantMessages) {
@@ -223,7 +209,6 @@ export default function ChatInterface() {
     setIsProcessingAutoMessages(false);
   }, [interactions, currentInteractionIndex, chatMessages, isLoading, isProcessingAutoMessages]);
 
-  // New useEffect to automatically process consecutive assistant messages
   useEffect(() => {
     if (chatMessages.length > 0 && !isLoading && !isProcessingAutoMessages) {
       processNextAssistantMessages();
@@ -235,7 +220,6 @@ export default function ChatInterface() {
       e.preventDefault();
       if (inputValue.trim() === "") return;
 
-      // 1. Add User message to chat
       const newUserMessage: Message = {
         id: chatMessages.length,
         type: "user",
@@ -249,21 +233,16 @@ export default function ChatInterface() {
       setChatMessages((prevMessages) => [...prevMessages, newUserMessage]);
       setInputValue("");
 
-      // Show loading spinner
       setIsLoading(true);
 
-      // 2. Wait for 2 seconds
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      // 3. Find and Add the next Assistant response from JSON
       let nextAssistantMessages = null;
 
-      // Find the next assistant message starting from the current interaction index
       for (let i = currentInteractionIndex; i < interactions.length; i++) {
         const interaction = interactions[i];
 
         if (interaction.role === "assistant") {
-          // Handle multiple messages in an interaction
           const messagesArray = interaction.messages || [interaction.message];
 
           nextAssistantMessages = messagesArray.map((message, index) => ({
@@ -279,13 +258,11 @@ export default function ChatInterface() {
             },
           }));
 
-          // Update the current interaction index
           setCurrentInteractionIndex(i + 1);
           break;
         }
       }
 
-      // Hide loading spinner
       setIsLoading(false);
 
       if (nextAssistantMessages) {
@@ -298,23 +275,17 @@ export default function ChatInterface() {
   );
 
   const handleActionComplete = useCallback(() => {
-    // Trigger next interaction
     const handleNextInteraction = async () => {
-      // Show loading spinner
       setIsLoading(true);
 
-      // Wait a moment to simulate processing
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      // Find and Add the next Assistant response from JSON
       let nextAssistantMessages = null;
 
-      // Find the next assistant message starting from the current interaction index
       for (let i = currentInteractionIndex; i < interactions.length; i++) {
         const interaction = interactions[i];
 
         if (interaction.role === "assistant") {
-          // Handle multiple messages in an interaction
           const messagesArray = interaction.messages || [interaction.message];
 
           nextAssistantMessages = messagesArray.map((message, index) => ({
@@ -330,13 +301,11 @@ export default function ChatInterface() {
             },
           }));
 
-          // Update the current interaction index
           setCurrentInteractionIndex(i + 1);
           break;
         }
       }
 
-      // Hide loading spinner
       setIsLoading(false);
 
       if (nextAssistantMessages) {
@@ -349,7 +318,21 @@ export default function ChatInterface() {
     handleNextInteraction();
   }, [interactions, currentInteractionIndex, chatMessages]);
 
-  console.log("Rendering chatMessages:", chatMessages); // <-- LOG 18: Render log
+  const handleToastAction = useCallback((message: string, type: string = "discord") => {
+    if (type === "discord") {
+      toast({
+        title: "Discord",
+        description: message,
+        className: "discord-toast",
+      });
+    } else {
+      toast({
+        description: message,
+      });
+    }
+  }, [toast]);
+
+  console.log("Rendering chatMessages:", chatMessages);
 
   return (
     <div className="min-h-screen h-screen p-4 flex flex-col items-center justify-center text-white">
@@ -380,6 +363,7 @@ export default function ChatInterface() {
                           componentName={message.message.componentName}
                           props={message.message.props}
                           onActionComplete={handleActionComplete}
+                          onToastAction={handleToastAction}
                         />
                       </div>
                     )}
@@ -407,6 +391,7 @@ export default function ChatInterface() {
           </Button>
         </form>
       </Card>
+      <Toaster />
     </div>
   );
 }

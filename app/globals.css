@@ -88,3 +88,31 @@ body {
     animation: fadeIn 1s ease-in-out;
   }
 }
+
+/* Discord-style toast notification */
+.discord-toast {
+  @apply bg-[#2f3136] border-[#40444b] text-white;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.24);
+}
+
+.discord-toast [data-title] {
+  @apply text-white font-semibold text-sm;
+}
+
+.discord-toast [data-description] {
+  @apply text-gray-300 text-sm;
+}
+
+/* Position toasts at top center */
+[data-sonner-toaster] {
+  position: fixed !important;
+  top: 20px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: auto !important;
+}
+
+[data-sonner-toast] {
+  border-radius: 8px !important;
+  padding: 12px 16px !important;
+}

@@ -6,6 +6,7 @@ export interface AIMessageWithActionProps {
   message: string;
   actionText?: string;
   onActionComplete?: () => void;
+  onToastAction?: (message: string, type?: string) => void;
   variant?: "default" | "success" | "warning" | "info";
 }
 
@@ -13,8 +14,22 @@ export default function AIMessageWithAction({
   message, 
   actionText = "Send", 
   onActionComplete,
+  onToastAction,
   variant = "default" 
 }: AIMessageWithActionProps) {
+  
+  const handleAction = () => {
+    // Trigger toast notification
+    if (onToastAction) {
+      onToastAction("Message sent to #announcements", "discord");
+    }
+    
+    // Continue with normal flow
+    if (onActionComplete) {
+      onActionComplete();
+    }
+  };
+
   return (
     <BaseWidget>
       <div className="space-y-4">
@@ -22,7 +37,7 @@ export default function AIMessageWithAction({
         
         <div className="flex justify-end">
           <Button 
-            onClick={onActionComplete}
+            onClick={handleAction}
             size="sm"
             className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 h-auto"
           >
