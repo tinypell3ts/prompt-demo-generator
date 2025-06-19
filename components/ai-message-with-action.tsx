@@ -1,6 +1,7 @@
-import { Send } from "lucide-react";
-import { Button } from "./ui/button";
-import { Card } from "./ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Send, MessageCircle } from "lucide-react";
+import BaseWidget from "./base-widget";
 
 export interface AIMessageWithActionProps {
   message: string;
@@ -15,42 +16,39 @@ export default function AIMessageWithAction({
   onActionComplete,
   variant = "default" 
 }: AIMessageWithActionProps) {
-  const getVariantStyles = (variant: string) => {
+  const getVariantConfig = () => {
     switch (variant) {
       case "success":
-        return "border-green-200 bg-green-50";
+        return { badgeText: "Success", badgeVariant: "default" as const };
       case "warning":
-        return "border-yellow-200 bg-yellow-50";
+        return { badgeText: "Warning", badgeVariant: "secondary" as const };
       case "info":
-        return "border-blue-200 bg-blue-50";
+        return { badgeText: "Info", badgeVariant: "outline" as const };
       default:
-        return "border-gray-200 bg-gray-50";
+        return { badgeText: "Message", badgeVariant: "secondary" as const };
     }
   };
 
-  const getButtonVariant = (variant: string) => {
-    switch (variant) {
-      case "success":
-        return "default";
-      case "warning":
-        return "secondary";
-      case "info":
-        return "outline";
-      default:
-        return "default";
-    }
-  };
+  const config = getVariantConfig();
 
   return (
-    <Card className={`p-4 ${getVariantStyles(variant)}`}>
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex-1">
-          <p className="text-gray-800 leading-relaxed">{message}</p>
+    <BaseWidget 
+      title="AI Assistant" 
+      icon={MessageCircle} 
+      variant={variant}
+    >
+      <div className="space-y-4">
+        <div className="flex items-start gap-2">
+          <Badge variant={config.badgeVariant} className="text-xs">
+            {config.badgeText}
+          </Badge>
         </div>
-        <div className="flex-shrink-0">
+        
+        <p className="text-sm leading-relaxed">{message}</p>
+        
+        <div className="flex justify-end">
           <Button 
             onClick={onActionComplete}
-            variant={getButtonVariant(variant) as any}
             size="sm"
             className="flex items-center gap-2"
           >
@@ -59,6 +57,6 @@ export default function AIMessageWithAction({
           </Button>
         </div>
       </div>
-    </Card>
+    </BaseWidget>
   );
-} 
+}

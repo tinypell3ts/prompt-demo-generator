@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type React from "react";
+import { Badge } from "@/components/ui/badge";
+import { CreditCard, Ticket } from "lucide-react";
+import BaseWidget from "./base-widget";
 
 interface TicketPurchaseProps {
   title: string;
@@ -9,30 +10,44 @@ interface TicketPurchaseProps {
   onActionComplete?: () => void;
 }
 
-const TicketPurchase: React.FC<TicketPurchaseProps> = ({ title, description, price, onActionComplete }) => {
+export default function TicketPurchase({ title, description, price, onActionComplete }: TicketPurchaseProps) {
   const handleApplePay = () => {
-    // Simulate Apple Pay purchase
     if (onActionComplete) {
       onActionComplete();
     }
   };
 
   return (
-    <Card className="bg-[#1A1A1A] border-0 rounded-xl w-full text-white">
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-      </CardHeader>
-      <CardContent className="p-6 pt-0 space-y-4">
-        <p className="text-gray-300">{description}</p>
-        <div className="flex items-center justify-between">
-          <span className="text-xl font-bold">€{price.toFixed(2)}</span>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white" onClick={handleApplePay}>
-            Pay with Apple Pay
-          </Button>
+    <BaseWidget title={title} icon={Ticket} variant="info">
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
         </div>
-      </CardContent>
-    </Card>
-  );
-};
+        
+        <div className="flex items-center justify-between p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
+          <div>
+            <h4 className="font-semibold text-lg">Total Price</h4>
+            <div className="flex items-center gap-2">
+              <Badge variant="outline" className="text-xs">
+                Early Bird
+              </Badge>
+              <span className="text-xs text-muted-foreground">Limited time offer</span>
+            </div>
+          </div>
+          <div className="text-right">
+            <div className="text-2xl font-bold">€{price.toFixed(2)}</div>
+          </div>
+        </div>
 
-export default TicketPurchase;
+        <Button 
+          onClick={handleApplePay}
+          className="w-full bg-black hover:bg-gray-800 text-white"
+          size="lg"
+        >
+          <CreditCard className="w-4 h-4 mr-2" />
+          Pay with Apple Pay
+        </Button>
+      </div>
+    </BaseWidget>
+  );
+}

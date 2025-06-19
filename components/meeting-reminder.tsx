@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 import { Calendar, Clock, Send, Users } from "lucide-react";
+import BaseWidget from "./base-widget";
 
 export interface MeetingReminderProps {
   meetingTitle?: string;
@@ -31,53 +33,50 @@ export default function MeetingReminder({
   };
 
   return (
-    <Card className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
+    <BaseWidget title="Meeting Reminder" icon={Calendar} variant="info">
       <div className="space-y-4">
-        {/* Header */}
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-blue-100 rounded-lg">
-            <Calendar className="w-5 h-5 text-blue-600" />
-          </div>
-          <div>
-            <h3 className="font-semibold text-lg text-gray-900">Meeting Reminder</h3>
-            <p className="text-sm text-gray-600">Upcoming meeting with your manager</p>
-          </div>
-        </div>
-
         {/* Meeting Details */}
         <div className="space-y-3">
-          <div className="flex items-center gap-2 text-gray-700">
-            <Clock className="w-4 h-4 text-gray-500" />
-            <span className="font-medium">{meetingTitle}</span>
+          <div className="flex items-center gap-2">
+            <div className="p-2 bg-blue-100 dark:bg-blue-950 rounded-lg">
+              <Clock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-base">{meetingTitle}</h3>
+              <p className="text-sm text-muted-foreground">{meetingDate} at {meetingTime}</p>
+            </div>
           </div>
           
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <Calendar className="w-4 h-4 text-gray-500" />
-            <span>{meetingDate} at {meetingTime}</span>
-          </div>
-
-          <div className="flex items-start gap-2 text-sm text-gray-600">
-            <Users className="w-4 h-4 text-gray-500 mt-0.5" />
+          <div className="flex items-start gap-2">
+            <div className="p-2 bg-gray-100 dark:bg-gray-800 rounded-lg">
+              <Users className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+            </div>
             <div>
-              <span className="font-medium">Attendees:</span>
-              <div className="mt-1">
+              <span className="font-medium text-sm">Attendees:</span>
+              <div className="mt-1 space-y-1">
                 {attendees.map((attendee, index) => (
-                  <span key={index} className="block text-gray-600">
-                    • {attendee}
-                  </span>
+                  <div key={index} className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <span className="text-sm text-muted-foreground">{attendee}</span>
+                  </div>
                 ))}
               </div>
             </div>
           </div>
         </div>
 
+        <Separator />
+
         {/* Report Section */}
-        <div className="bg-white rounded-lg p-4 border border-blue-100">
-          <h4 className="font-medium text-gray-900 mb-2">Prepared Report</h4>
-          <p className="text-sm text-gray-600 mb-3">{reportContent}</p>
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <h4 className="font-medium text-base">Prepared Report</h4>
+            <Badge variant="outline" className="text-xs">Ready</Badge>
+          </div>
+          <p className="text-sm text-muted-foreground leading-relaxed">{reportContent}</p>
           
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-gray-500">
+          <div className="flex items-center justify-between pt-2">
+            <span className="text-xs text-muted-foreground">
               Report will be automatically sent before each meeting
             </span>
             <Button
@@ -91,26 +90,26 @@ export default function MeetingReminder({
           </div>
         </div>
 
+        <Separator />
+
         {/* Auto-schedule Option */}
-        <div className="flex items-center justify-between p-3 bg-blue-100 rounded-lg">
+        <div className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
           <div>
-            <p className="text-sm font-medium text-blue-900">
-              Auto-generate reports?
-            </p>
-            <p className="text-xs text-blue-700">
+            <p className="text-sm font-medium">Auto-generate reports?</p>
+            <p className="text-xs text-muted-foreground">
               Automatically send this report before each weekly meeting
             </p>
           </div>
           <Button
             variant="outline"
             size="sm"
-            className="border-blue-300 text-blue-700 hover:bg-blue-200"
             onClick={onActionComplete}
+            className="border-blue-300 text-blue-700 hover:bg-blue-100 dark:border-blue-700 dark:text-blue-400 dark:hover:bg-blue-950"
           >
             Enable
           </Button>
         </div>
       </div>
-    </Card>
+    </BaseWidget>
   );
-} 
+}

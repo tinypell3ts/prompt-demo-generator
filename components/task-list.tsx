@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type React from "react";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { Code2, ExternalLink } from "lucide-react";
+import BaseWidget from "./base-widget";
 
 export interface Task {
   id: string;
@@ -18,51 +20,65 @@ interface TaskListProps {
   onActionComplete?: (task: Task) => void;
 }
 
-const TaskList: React.FC<TaskListProps> = ({ tasks, onActionComplete }) => {
+export default function TaskList({ tasks, onActionComplete }: TaskListProps) {
+  const getDifficultyConfig = (difficulty: Task['difficulty']) => {
+    switch (difficulty) {
+      case "Beginner":
+        return { variant: 'default' as const, color: 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400' };
+      case "Intermediate":
+        return { variant: 'secondary' as const, color: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-400' };
+      case "Advanced":
+        return { variant: 'destructive' as const, color: 'bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-400' };
+      default:
+        return { variant: 'secondary' as const, color: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300' };
+    }
+  };
+
   return (
-    <Card className="bg-[#1A1A1A] border-0 rounded-xl w-full text-white">
-      <CardHeader>
-        <CardTitle>Open Source Tasks</CardTitle>
-      </CardHeader>
-      <CardContent className="p-6 pt-0 space-y-4">
-        {tasks.map((task) => (
-          <div key={task.id} className="border-b border-gray-800 pb-4 last:border-b-0">
-            <div className="flex justify-between items-center">
-              <div>
-                <h3 className="text-lg font-bold">{task.title}</h3>
-                <p className="text-gray-400 text-sm">{task.description}</p>
-                <div className="flex items-center gap-2 mt-2">
-                  <span
-                    className={`
-                    px-2 py-1 rounded-full text-xs
-                    ${
-                      task.difficulty === "Beginner"
-                        ? "bg-green-600/20 text-green-400"
-                        : task.difficulty === "Intermediate"
-                        ? "bg-yellow-600/20 text-yellow-400"
-                        : "bg-red-600/20 text-red-400"
-                    }
-                  `}
+    <BaseWidget title="Open Source Tasks" icon={Code2} variant="success">
+      <div className="space-y-4">
+        {tasks.map((task, index) => {
+          const difficultyConfig = getDifficultyConfig(task.difficulty);
+          
+          return (
+            <div key={task.id}>
+              <div className="space-y-3">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1 space-y-2">
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-semibold text-base">{task.title}</h3>
+                      <Badge className={`text-xs ${difficultyConfig.color}`} variant="secondary">
+                        {task.difficulty}
+                      </Badge>
+                    </div>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {task.description}
+                    </p>
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-1">
+                        <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
+                          {task.amount} {task.currency}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <ExternalLink className="h-3 w-3" />
+                        <span>{task.repository}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <Button
+                    onClick={() => onActionComplete && onActionComplete(task)}
+                    className="bg-green-600 hover:bg-green-700 text-white ml-4"
                   >
-                    {task.difficulty}
-                  </span>
-                  <span className="text-blue-400 text-sm">
-                    {task.amount} {task.currency}
-                  </span>
+                    Accept Task
+                  </Button>
                 </div>
               </div>
-              <Button
-                className="bg-green-600 hover:bg-green-700 text-white"
-                onClick={() => onActionComplete && onActionComplete(task)}
-              >
-                Accept Task
-              </Button>
+              {index < tasks.length - 1 && <Separator className="my-4" />}
             </div>
-          </div>
-        ))}
-      </CardContent>
-    </Card>
+          );
+        })}
+      </div>
+    </BaseWidget>
   );
-};
-
-export default TaskList;
+}

@@ -1,14 +1,15 @@
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { ArrowRight } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { ArrowRight, ExternalLink, Receipt } from "lucide-react";
+import BaseWidget from "./base-widget";
 
 interface TransactionCardProps {
-  hash: string;
-  from: string;
-  to: string;
-  timestamp: string;
-  amount: number;
-  currency: string;
+  hash?: string;
+  from?: string;
+  to?: string;
+  timestamp?: string;
+  amount?: number;
+  currency?: string;
 }
 
 export default function TransactionCard({
@@ -20,52 +21,58 @@ export default function TransactionCard({
   currency = "ETH",
 }: TransactionCardProps) {
   return (
-    <div className="p-4">
-      <Card className="font-mono space-y-4 rounded-xl bg-black/80 p-4 text-white backdrop-blur-sm">
-        <div className="flex items-center justify-between text-sm text-gray-400">
+    <BaseWidget title="Transaction Receipt" icon={Receipt} variant="success">
+      <div className="space-y-4">
+        <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
           <div className="flex items-center gap-2">
-            <div className="rounded-md bg-gray-800/50 p-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-5 w-5"
-              >
-                <rect width="7" height="7" x="3" y="3" rx="1" />
-                <rect width="7" height="7" x="14" y="3" rx="1" />
-                <rect width="7" height="7" x="14" y="14" rx="1" />
-                <rect width="7" height="7" x="3" y="14" rx="1" />
-              </svg>
+            <div className="p-2 bg-gray-200 dark:bg-gray-800 rounded-md">
+              <ExternalLink className="h-4 w-4 text-gray-600 dark:text-gray-400" />
             </div>
-            <span>{hash}</span>
+            <div>
+              <p className="text-sm font-medium">Transaction Hash</p>
+              <p className="text-xs text-muted-foreground font-mono">{hash}</p>
+            </div>
           </div>
-          <span>{timestamp}</span>
+          <Badge variant="outline" className="text-xs">
+            {timestamp}
+          </Badge>
         </div>
-        <div className="flex items-center justify-between px-1">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
-            <span className="text-sm text-gray-300">{from}</span>
+
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="h-8 w-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
+              <div>
+                <p className="text-xs text-muted-foreground">From</p>
+                <p className="text-sm font-mono">{from}</p>
+              </div>
+            </div>
+            <ArrowRight className="h-4 w-4 text-muted-foreground" />
+            <div className="flex items-center gap-2">
+              <div className="h-8 w-8 rounded-full bg-gradient-to-r from-green-300 via-blue-500 to-purple-600" />
+              <div>
+                <p className="text-xs text-muted-foreground">To</p>
+                <p className="text-sm font-mono">{to}</p>
+              </div>
+            </div>
           </div>
-          <ArrowRight className="h-4 w-4 text-gray-500" />
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-full bg-gradient-to-r from-green-300 via-blue-500 to-purple-600" />
-            <span className="text-sm text-gray-300">{to}</span>
+        </div>
+
+        <div className="text-center p-4 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-800">
+          <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+            {amount} {currency}
           </div>
+          <p className="text-xs text-muted-foreground mt-1">Transaction Amount</p>
         </div>
-        <div className="flex items-center justify-center text-lg font-semibold">
-          {amount} {currency}
-        </div>
+
         <Button
-          variant="ghost"
-          className="w-full rounded-lg border border-white/10 bg-white/5 text-sm font-normal text-white hover:bg-white/10"
+          variant="outline"
+          className="w-full"
         >
-          View Transaction
+          <ExternalLink className="w-4 h-4 mr-2" />
+          View on Block Explorer
         </Button>
-      </Card>
-    </div>
+      </div>
+    </BaseWidget>
   );
 }
