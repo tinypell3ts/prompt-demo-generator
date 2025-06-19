@@ -39,7 +39,6 @@ export default function MeetingReminder({
           </div>
           <div>
             <h3 className="text-white font-medium text-sm">Meeting Reminder</h3>
-            <p className="text-gray-400 text-xs">Upcoming meeting with your manager</p>
           </div>
         </div>
 
@@ -83,27 +82,12 @@ export default function MeetingReminder({
               className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 h-auto"
             >
               <Send className="w-3 h-3 mr-1" />
-              Send Report
+              View Report
             </Button>
           </div>
         </div>
 
-        <div className="flex items-center justify-between p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
-          <div>
-            <p className="text-white text-sm font-medium">Auto-generate reports?</p>
-            <p className="text-gray-400 text-xs">
-              Automatically send this report before each weekly meeting
-            </p>
-          </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onActionComplete}
-            className="border-blue-500/30 text-blue-400 hover:bg-blue-500/10 text-xs px-3 py-1 h-auto"
-          >
-            Enable
-          </Button>
-        </div>
+        
       </div>
     </BaseWidget>
   );

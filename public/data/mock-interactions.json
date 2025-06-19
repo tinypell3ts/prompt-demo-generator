@@ -1,6 +1,7 @@
 [
   {
     "role": "assistant",
+    "thinkingTime": 500,
     "messages": [
       {
         "type": "text",
@@ -10,6 +11,7 @@
   },
   {
     "role": "assistant",
+    "thinkingTime": 2000,
     "messages": [
       {
         "type": "component",
@@ -20,7 +22,7 @@
               "id": "1",
               "type": "alert",
               "title": "Moderation response times increasing",
-              "description": "Average response time has increased to 4.2 hours (up 35% from last week). 12 reports are pending review.",
+              "description": "Average response time has increased to 4.2 hours (up 35% from last week).",
               "time": "2 hours ago",
               "action": "Learn more"
             },
@@ -54,6 +56,27 @@
   },
   {
     "role": "assistant",
+    "thinkingTime": 1500,
+    "messages": [
+      {
+        "type": "text",
+        "content": "Your moderation response times are increasing due to a higher volume of reports and limited moderator availability during peak hours"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "thinkingTime": 1000,
+    "messages": [
+      {
+        "type": "text",
+        "content": "I recommend adding a new moderator. Let me find the best candidates for you."
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "thinkingTime": 2000,
     "messages": [
       {
         "type": "component",
@@ -62,7 +85,7 @@
       }
     ]
   },
-    {
+  {
     "role": "user",
     "message": {
       "type": "text",
@@ -71,6 +94,7 @@
   },
   {
     "role": "assistant",
+    "thinkingTime": 800,
     "messages": [
       {
         "type": "component",
@@ -83,7 +107,7 @@
       }
     ]
   },
-    {
+  {
     "role": "user",
     "message": {
       "type": "text",
@@ -91,25 +115,47 @@
     }
   },
   {
-     "role": "assistant",
-     "messages": [
+    "role": "assistant",
+    "thinkingTime": 1200,
+    "messages": [
       {
         "type": "text",
-        "content": "I can see you have an upcoming meeting with your manager."
+        "content": "I can see you have an upcoming meeting with your manager, Leo Tan."
       }
-     ]
+    ]
   },
- {
+  {
     "role": "assistant",
+    "toastTriggers": [
+      {
+        "triggerText": "I've just sent a community health report to Leo ahead of the meeting.",
+        "toastMessage": "Community health report emailed to Leo Tan",
+        "toastType": "email",
+        "toastAction": "View report"
+      }
+    ],
+    "messages": [
+      {
+        "type": "text",
+        "content": "I've just sent a community health report to Leo ahead of the meeting."
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "thinkingTime": 1200,
     "messages": [
       {
         "type": "component",
         "componentName": "MeetingReminder",
         "props": {
-          "meetingTitle": "Weekly Manager Meeting",
+          "meetingTitle": "Weekly Community Check-in",
           "meetingTime": "2:00 PM",
-          "meetingDate": "Today",
-          "attendees": ["Your Manager", "Team Lead"],
+          "meetingDate": "Tomorrow",
+          "attendees": [
+            "Leo Tan",
+            "Sarah Bailey"
+          ],
           "reportContent": "Community health report covering moderation issues, engagement metrics, and upcoming initiatives"
         }
       }
@@ -126,6 +172,24 @@
     "role": "assistant",
     "messages": [
       {
+        "type": "component",
+        "componentName": "ViewReport",
+        "props": {}
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "message": {
+      "type": "text",
+      "content": "Yes, I'm going to send a community health report to my manager"
+    }
+  },
+  {
+    "role": "assistant",
+    "thinkingTime": 1800,
+    "messages": [
+      {
         "type": "text",
         "content": "Also, Feature X is being discussed a lot in the community lately. There's been a 40% increase in mentions and the sentiment is overwhelmingly positive. Maybe it's time to do a Twitter Spaces to dive deeper into this topic?"
       }
@@ -140,12 +204,115 @@
   },
   {
     "role": "assistant",
+    "thinkingTime": 4000,
+    "toastTriggers": [
+      {
+        "triggerText": "Perfect! I've scheduled a Twitter Spaces for Feature X discussion. Here are the details:\n\n🎙️ **Host:** You\n👥 **Co-hosts:** @SarahChen, @MikeRodriguez (they've been leading the Feature X discussions)\n📝 **Topic:** Deep dive into Feature X - community feedback and roadmap\n\nI've also sent out a community announcement and pinned it to the #feature-requests channel. The event is set to go live in 24 hours!",
+        "toastMessage": "Twitter Spaces scheduled: Feature X discussion in 24 hours",
+        "toastType": "twitter"
+      }
+    ],
     "messages": [
       {
         "type": "text",
         "content": "Perfect! I've scheduled a Twitter Spaces for Feature X discussion. Here are the details:\n\n🎙️ **Host:** You\n👥 **Co-hosts:** @SarahChen, @MikeRodriguez (they've been leading the Feature X discussions)\n📝 **Topic:** Deep dive into Feature X - community feedback and roadmap\n\nI've also sent out a community announcement and pinned it to the #feature-requests channel. The event is set to go live in 24 hours!"
       }
     ]
+  },
+  {
+    "role": "assistant",
+    "thinkingTime": 1500,
+    "messages": [
+      {
+        "type": "component",
+        "componentName": "TwitterSpace",
+        "props": {
+          "title": "Feature X Deep Dive Discussion",
+          "host": "Community Team",
+          "date": "Tomorrow",
+          "time": "2:00 PM EST",
+          "attendees": 24,
+          "isVerified": true
+        }
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "thinkingTime": 1200,
+    "messages": [
+      {
+        "type": "component",
+        "componentName": "RewardSummary",
+        "props": {
+          "title": "Top Contributors This Week",
+          "contributors": [
+            {
+              "name": "Sarah Chen",
+              "contribution": "Led Feature X discussions",
+              "reward": "50 $OPEN"
+            },
+            {
+              "name": "Mike Rodriguez",
+              "contribution": "High engagement in help channels",
+              "reward": "30 $OPEN"
+            },
+            {
+              "name": "Alex Thompson",
+              "contribution": "Quick response moderator",
+              "reward": "20 $OPEN"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "thinkingTime": 1500,
+    "messages": [
+      {
+        "type": "text",
+        "content": "I've analyzed recent community contributions across GitHub, Discord, and Telegram. Here are the top contributors who deserve recognition for their valuable work:"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "thinkingTime": 2000,
+    "messages": [
+      {
+        "type": "component",
+        "componentName": "RewardRecommendations",
+        "props": {
+          "contributors": [
+            {
+              "name": "Sarah Chen",
+              "platform": "discord",
+              "contribution": "Led Feature X discussions and helped 24 community members",
+              "recommendedReward": "50 $OPEN",
+              "contributionMetrics": "47 replies, 89% positive sentiment",
+              "avatar": "SC"
+            },
+            {
+              "name": "Mike Rodriguez",
+              "platform": "github",
+              "contribution": "Submitted 3 PRs improving smart contract security",
+              "recommendedReward": "75 $OPEN",
+              "contributionMetrics": "128 additions, 45 deletions, 4 files changed",
+              "avatar": "MR"
+            },
+            {
+              "name": "Alex Thompson",
+              "platform": "telegram",
+              "contribution": "Provided technical support and documentation improvements",
+              "recommendedReward": "35 $OPEN",
+              "contributionMetrics": "56 messages, 12 resources shared",
+              "avatar": "AT"
+            }
+          ]
+        }
+      }
+    ]
   }
-  
 ]

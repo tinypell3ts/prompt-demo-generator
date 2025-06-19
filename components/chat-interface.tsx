@@ -32,6 +32,9 @@ const componentMap = {
   ModeratorRecommendations: lazy(() => import("@/components/moderator-recommendations")),
   AIMessageWithAction: lazy(() => import("@/components/ai-message-with-action")),
   MeetingReminder: lazy(() => import("@/components/meeting-reminder")),
+  ViewReport: lazy(() => import("@/components/view-report")),
+  TwitterSpace: lazy(() => import("@/components/twitter-space")),
+  RewardRecommendations: lazy(() => import("@/components/reward-recommendations")),
 };
 
 const DynamicComponent: React.FC<{
@@ -159,26 +162,79 @@ export default function ChatInterface() {
     }
   }, [interactions, currentInteractionIndex]);
 
+  const handleToastAction = useCallback((message: string, type: string = "discord") => {
+    if (type === "discord") {
+      toast({
+        title: "Discord",
+        description: message,
+        className: "discord-toast",
+      });
+    } else {
+      toast({
+        description: message,
+      });
+    }
+  }, [toast]);
+
+  const handleToastTriggers = useCallback((interaction: any, messages: any[]) => {
+    if (!interaction.toastTriggers) return;
+
+    interaction.toastTriggers.forEach((trigger: any) => {
+      const matchingMessage = messages.find(message =>
+        message.content === trigger.triggerText
+      );
+
+      if (matchingMessage) {
+        setTimeout(() => {
+          if (trigger.toastType === "email") {
+            toast({
+              title: "Email Sent",
+              description: trigger.toastMessage,
+              className: "email-toast",
+            });
+          } else if (trigger.toastType === "twitter") {
+            toast({
+              title: "Twitter",
+              description: trigger.toastMessage,
+              className: "twitter-toast",
+            });
+          } else if (trigger.toastType === "trending") {
+            toast({
+              title: "Trending",
+              description: trigger.toastMessage,
+              className: "trending-toast",
+            });
+          } else {
+            toast({
+              description: trigger.toastMessage,
+            });
+          }
+        }, 500);
+      }
+    });
+  }, [toast]);
+
   const processNextAssistantMessages = useCallback(async () => {
     if (isProcessingAutoMessages || isLoading) return;
-    
+
     setIsProcessingAutoMessages(true);
-    
-    if (currentInteractionIndex < interactions.length && 
-        interactions[currentInteractionIndex]?.role === "assistant") {
-      
+
+    if (currentInteractionIndex < interactions.length &&
+      interactions[currentInteractionIndex]?.role === "assistant") {
+
       setIsLoading(true);
-      
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
+
+      const thinkingTime = interactions[currentInteractionIndex]?.thinkingTime || 1000;
+      await new Promise((resolve) => setTimeout(resolve, thinkingTime));
+
       let nextAssistantMessages = null;
-      
+
       for (let i = currentInteractionIndex; i < interactions.length; i++) {
         const interaction = interactions[i];
-        
+
         if (interaction.role === "assistant") {
           const messagesArray = interaction.messages || [interaction.message];
-          
+
           nextAssistantMessages = messagesArray.map((message, index) => ({
             id: chatMessages.length + index + 1,
             type: "assistant",
@@ -191,23 +247,26 @@ export default function ChatInterface() {
               props: message.props,
             },
           }));
-          
+
           setCurrentInteractionIndex(i + 1);
+
+          handleToastTriggers(interaction, messagesArray);
+
           break;
         }
       }
-      
+
       setIsLoading(false);
-      
+
       if (nextAssistantMessages) {
         setChatMessages((prevMessages) => [...prevMessages, ...nextAssistantMessages]);
       } else {
         console.log("End of conversation.");
       }
     }
-    
+
     setIsProcessingAutoMessages(false);
-  }, [interactions, currentInteractionIndex, chatMessages, isLoading, isProcessingAutoMessages]);
+  }, [interactions, currentInteractionIndex, chatMessages, isLoading, isProcessingAutoMessages, handleToastTriggers]);
 
   useEffect(() => {
     if (chatMessages.length > 0 && !isLoading && !isProcessingAutoMessages) {
@@ -235,7 +294,16 @@ export default function ChatInterface() {
 
       setIsLoading(true);
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      let thinkingTime = 1000;
+      for (let i = currentInteractionIndex; i < interactions.length; i++) {
+        const interaction = interactions[i];
+        if (interaction.role === "assistant") {
+          thinkingTime = interaction.thinkingTime || 1000;
+          break;
+        }
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, thinkingTime));
 
       let nextAssistantMessages = null;
 
@@ -259,6 +327,9 @@ export default function ChatInterface() {
           }));
 
           setCurrentInteractionIndex(i + 1);
+
+          handleToastTriggers(interaction, messagesArray);
+
           break;
         }
       }
@@ -271,14 +342,23 @@ export default function ChatInterface() {
         console.log("End of conversation.");
       }
     },
-    [inputValue, interactions, currentInteractionIndex, chatMessages]
+    [inputValue, interactions, currentInteractionIndex, chatMessages, handleToastTriggers]
   );
 
   const handleActionComplete = useCallback(() => {
     const handleNextInteraction = async () => {
       setIsLoading(true);
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      let thinkingTime = 1000;
+      for (let i = currentInteractionIndex; i < interactions.length; i++) {
+        const interaction = interactions[i];
+        if (interaction.role === "assistant") {
+          thinkingTime = interaction.thinkingTime || 1000;
+          break;
+        }
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, thinkingTime));
 
       let nextAssistantMessages = null;
 
@@ -302,6 +382,9 @@ export default function ChatInterface() {
           }));
 
           setCurrentInteractionIndex(i + 1);
+
+          handleToastTriggers(interaction, messagesArray);
+
           break;
         }
       }
@@ -316,21 +399,7 @@ export default function ChatInterface() {
     };
 
     handleNextInteraction();
-  }, [interactions, currentInteractionIndex, chatMessages]);
-
-  const handleToastAction = useCallback((message: string, type: string = "discord") => {
-    if (type === "discord") {
-      toast({
-        title: "Discord",
-        description: message,
-        className: "discord-toast",
-      });
-    } else {
-      toast({
-        description: message,
-      });
-    }
-  }, [toast]);
+  }, [interactions, currentInteractionIndex, chatMessages, handleToastTriggers]);
 
   console.log("Rendering chatMessages:", chatMessages);
 
@@ -350,9 +419,8 @@ export default function ChatInterface() {
               <div key={message.id} className="space-y-4">
                 <div className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}>
                   <div
-                    className={`max-w-[85%] rounded-2xl ${
-                      message.type === "user" ? "bg-[#222222] text-white px-6 py-3" : "text-white"
-                    }  ${message.message.type === "component" ? "w-full max-w-full" : ""}`}
+                    className={`max-w-[85%] rounded-2xl ${message.type === "user" ? "bg-[#222222] text-white px-6 py-3" : "text-white"
+                      }  ${message.message.type === "component" ? "w-full max-w-full" : ""}`}
                   >
                     {message.message.type === "text" && (
                       <div className="whitespace-pre-wrap font-sans animate-fade-in">{message.message.content}</div>
