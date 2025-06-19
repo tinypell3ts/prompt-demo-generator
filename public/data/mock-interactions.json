@@ -4,72 +4,41 @@
     "messages": [
       {
         "type": "text",
-        "content": "Welcome to the Open Format Community! Let's help you find the right contribution."
-      },
-      {
-        "type": "text",
-        "content": "First, tell me about your programming experience and skills."
+        "content": "Welcome back! Here's what has been happening since you were last here:"
       }
     ]
   },
   {
-    "role": "user",
-    "message": {
-      "type": "text",
-      "content": "I'm a JavaScript developer with 2 years of experience, mostly with React and Node.js"
-    }
-  },
-  {
     "role": "assistant",
     "messages": [
-      {
-        "type": "text",
-        "content": "Great! I can see you have merged code into other open-source projects like ElizaOS, HeroSpace & react."
-      },
-      {
-        "type": "text",
-        "content": "Do you have any blockchain experience?"
-      }
-    ]
-  },
-  {
-    "role": "user",
-    "message": {
-      "type": "text",
-      "content": "I have some experience with Ethereum and Solidity"
-    }
-  },
-  {
-    "role": "assistant",
-    "messages": [
-      {
-        "type": "text",
-        "content": "Based on your skills, I've found some more intermediate tasks you might be interested in."
-      },
       {
         "type": "component",
-        "componentName": "TaskList",
+        "componentName": "CommunityActions",
         "props": {
-          "tasks": [
+          "actions": [
             {
-              "id": "issue-1",
-              "title": "Implement Cross-Chain Token Bridge Functionality",
-              "description": "Develop a smart contract module for bridging ERC-20 tokens between Ethereum and Polygon networks with security optimizations",
-              "difficulty": "Intermediate",
-              "amount": 250,
-              "currency": "USDC",
-              "repository": "openformat/blockchain-infrastructure",
-              "issueLink": "https://github.com/openformat/blockchain-infrastructure/issues/789"
+              "id": "1",
+              "type": "alert",
+              "title": "Moderation response times increasing",
+              "description": "Average response time has increased to 4.2 hours (up 35% from last week). 12 reports are pending review.",
+              "time": "2 hours ago",
+              "action": "Learn more"
             },
             {
-              "id": "issue-2",
-              "title": "Enhance AI Agent's Contextual Memory Retrieval",
-              "description": "Implement advanced embedding-based semantic search for improving RAG (Retrieval-Augmented Generation) context window precision",
-              "difficulty": "Intermediate",
-              "amount": 300,
-              "currency": "USDC",
-              "repository": "openformat/ai-agents",
-              "issueLink": "https://github.com/openformat/ai-agents/issues/234"
+              "id": "2",
+              "type": "alert",
+              "title": "@timec posting suspicious links",
+              "description": "User has posted 8 external links in the past hour across #general and #help channels. Community members are reporting spam.",
+              "time": "45 minutes ago",
+              "action": "Review user activity"
+            },
+            {
+              "id": "3",
+              "type": "positive",
+              "title": "Engagement spike in #feature-requests",
+              "description": "Discussion about dark mode has generated 47 replies and 23 upvotes. Sarah Chen and Mike Rodriguez are leading productive conversations.",
+              "time": "3 hours ago",
+              "action": "Join the conversation"
             }
           ]
         }
@@ -77,11 +46,72 @@
     ]
   },
   {
+    "role": "user",
+    "message": {
+      "type": "text",
+      "content": "Learn more about the moderation response times"
+    }
+  },
+  {
     "role": "assistant",
     "messages": [
       {
+        "type": "component",
+        "componentName": "ModeratorRecommendations",
+        "props": {}
+      }
+    ]
+  },
+    {
+    "role": "user",
+    "message": {
+      "type": "text",
+      "content": "Assign Discord role to Alex Thompson"
+    }
+  },
+  {
+    "role": "assistant",
+    "messages": [
+      {
+        "type": "component",
+        "componentName": "AIMessageWithAction",
+        "props": {
+          "message": "I've assigned the Discord role to Sarah Chen. Shall I send an announcement to the community?",
+          "actionText": "Yes, send it",
+          "variant": "info"
+        }
+      }
+    ]
+  },
+    {
+    "role": "user",
+    "message": {
+      "type": "text",
+      "content": "Assign Discord role to Sarah Chen"
+    }
+  },
+  {
+     "role": "assistant",
+     "messages": [
+      {
         "type": "text",
-        "content": "Excellent choice! Once you submit a pull request for the Implement Cross-Chain Token Bridge Functionality task, we'll review and reward you."
+        "content": "I can see you have an upcoming meeting with your manager."
+      }
+     ]
+  },
+ {
+    "role": "assistant",
+    "messages": [
+      {
+        "type": "component",
+        "componentName": "MeetingReminder",
+        "props": {
+          "meetingTitle": "Weekly Manager Meeting",
+          "meetingTime": "2:00 PM",
+          "meetingDate": "Today",
+          "attendees": ["Your Manager", "Team Lead"],
+          "reportContent": "Community health report covering moderation issues, engagement metrics, and upcoming initiatives"
+        }
       }
     ]
   },
@@ -89,7 +119,7 @@
     "role": "user",
     "message": {
       "type": "text",
-      "content": "I've submitted the pull request"
+      "content": "Yes, I'm going to send a community health report to my manager"
     }
   },
   {
@@ -97,24 +127,25 @@
     "messages": [
       {
         "type": "text",
-        "content": "Great job! I've reviewed your pull request, looks good!. You've earned 250 USDC for your contribution. Thank you for your hard work!"
-      },
-      {
-        "type": "component",
-        "componentName": "RewardReceipt",
-        "props": {
-          "hash": "Transaction Receipt",
-          "from": "0x33...A6Ea",
-          "to": "andy.eth",
-          "timestamp": "6 sec ago",
-          "amount": 250,
-          "currency": "USDC"
-        }
-      },
+        "content": "Also, Feature X is being discussed a lot in the community lately. There's been a 40% increase in mentions and the sentiment is overwhelmingly positive. Maybe it's time to do a Twitter Spaces to dive deeper into this topic?"
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "message": {
+      "type": "text",
+      "content": "Setup Twitter space"
+    }
+  },
+  {
+    "role": "assistant",
+    "messages": [
       {
         "type": "text",
-        "content": "Want to see some more tasks?"
+        "content": "Perfect! I've scheduled a Twitter Spaces for Feature X discussion. Here are the details:\n\n🎙️ **Host:** You\n👥 **Co-hosts:** @SarahChen, @MikeRodriguez (they've been leading the Feature X discussions)\n📝 **Topic:** Deep dive into Feature X - community feedback and roadmap\n\nI've also sent out a community announcement and pinned it to the #feature-requests channel. The event is set to go live in 24 hours!"
       }
     ]
   }
+  
 ]

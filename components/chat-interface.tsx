@@ -26,6 +26,10 @@ const componentMap = {
   TweetShare: lazy(() => import("@/components/tweet-share")),
   TaskList: lazy(() => import("@/components/task-list")),
   RewardReceipt: lazy(() => import("@/components/reward-receipt")),
+  CommunityActions: lazy(() => import("@/components/community-actions")),
+  ModeratorRecommendations: lazy(() => import("@/components/moderator-recommendations")),
+  AIMessageWithAction: lazy(() => import("@/components/ai-message-with-action")),
+  MeetingReminder: lazy(() => import("@/components/meeting-reminder")),
 };
 
 const DynamicComponent: React.FC<{
@@ -56,6 +60,7 @@ export default function ChatInterface() {
   const [inputValue, setInputValue] = useState("");
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isProcessingAutoMessages, setIsProcessingAutoMessages] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -158,6 +163,72 @@ export default function ChatInterface() {
       }
     }
   }, [interactions, currentInteractionIndex]);
+
+  // New function to process consecutive assistant messages
+  const processNextAssistantMessages = useCallback(async () => {
+    if (isProcessingAutoMessages || isLoading) return;
+    
+    setIsProcessingAutoMessages(true);
+    
+    // Check if the next interaction is an assistant message
+    if (currentInteractionIndex < interactions.length && 
+        interactions[currentInteractionIndex]?.role === "assistant") {
+      
+      // Show loading spinner
+      setIsLoading(true);
+      
+      // Wait a moment to simulate processing
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      
+      // Find and Add the next Assistant response from JSON
+      let nextAssistantMessages = null;
+      
+      // Find the next assistant message starting from the current interaction index
+      for (let i = currentInteractionIndex; i < interactions.length; i++) {
+        const interaction = interactions[i];
+        
+        if (interaction.role === "assistant") {
+          // Handle multiple messages in an interaction
+          const messagesArray = interaction.messages || [interaction.message];
+          
+          nextAssistantMessages = messagesArray.map((message, index) => ({
+            id: chatMessages.length + index + 1,
+            type: "assistant",
+            text: message.content || "Component Message",
+            displayedText: message.content || "Component Message",
+            message: {
+              type: message.type,
+              content: message.content,
+              componentName: message.componentName,
+              props: message.props,
+            },
+          }));
+          
+          // Update the current interaction index
+          setCurrentInteractionIndex(i + 1);
+          break;
+        }
+      }
+      
+      // Hide loading spinner
+      setIsLoading(false);
+      
+      if (nextAssistantMessages) {
+        setChatMessages((prevMessages) => [...prevMessages, ...nextAssistantMessages]);
+      } else {
+        console.log("End of conversation.");
+      }
+    }
+    
+    setIsProcessingAutoMessages(false);
+  }, [interactions, currentInteractionIndex, chatMessages, isLoading, isProcessingAutoMessages]);
+
+  // New useEffect to automatically process consecutive assistant messages
+  useEffect(() => {
+    if (chatMessages.length > 0 && !isLoading && !isProcessingAutoMessages) {
+      processNextAssistantMessages();
+    }
+  }, [chatMessages, processNextAssistantMessages, isLoading, isProcessingAutoMessages]);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -304,11 +375,13 @@ export default function ChatInterface() {
                       <div className="whitespace-pre-wrap font-sans animate-fade-in">{message.message.content}</div>
                     )}
                     {message.message.type === "component" && (
-                      <DynamicComponent
-                        componentName={message.message.componentName}
-                        props={message.message.props}
-                        onActionComplete={handleActionComplete}
-                      />
+                      <div className="animate-fade-in">
+                        <DynamicComponent
+                          componentName={message.message.componentName}
+                          props={message.message.props}
+                          onActionComplete={handleActionComplete}
+                        />
+                      </div>
                     )}
                   </div>
                 </div>
