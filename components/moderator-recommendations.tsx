@@ -1,7 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Users } from "lucide-react";
 import BaseWidget from "./base-widget";
 
 type Moderator = {
@@ -40,62 +37,58 @@ const recommendedModerators: Moderator[] = [
   },
 ];
 
-const statusStyles: Record<string, string> = {
-  Positive: "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400",
-  Neutral: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300",
-  Negative: "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-400",
-};
-
 type Props = {
   onActionComplete?: () => void;
 };
 
 export default function ModeratorRecommendations({ onActionComplete }: Props) {
   return (
-    <BaseWidget title="Recommended Moderators" icon={Users} variant="info">
-      <div className="space-y-1 mb-4">
-        <p className="text-sm text-muted-foreground">
-          Based on activity, message count, and response times
-        </p>
-      </div>
+    <BaseWidget>
       <div className="space-y-4">
-        {recommendedModerators.map((mod, index) => (
-          <div key={mod.name}>
-            <div className="flex items-center justify-between">
+        <div>
+          <h3 className="text-white font-medium text-sm mb-1">Recommended Moderators</h3>
+          <p className="text-gray-400 text-xs">
+            Based on activity, message count, and response times
+          </p>
+        </div>
+        
+        <div className="space-y-3">
+          {recommendedModerators.map((mod, index) => (
+            <div key={mod.name} className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-950 flex items-center justify-center font-bold text-purple-700 dark:text-purple-400">
-                  {mod.initials}
+                <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center">
+                  <span className="text-purple-400 font-medium text-xs">{mod.initials}</span>
                 </div>
-                <div className="space-y-1">
+                <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-medium text-base">{mod.name}</span>
-                    <Badge
-                      className={`text-xs ${statusStyles[mod.status]}`}
-                      variant="secondary"
-                    >
+                    <span className="text-white text-sm font-medium">{mod.name}</span>
+                    <span className={`text-xs px-2 py-0.5 rounded ${
+                      mod.status === 'Positive' ? 'bg-green-500/20 text-green-400' :
+                      mod.status === 'Negative' ? 'bg-red-500/20 text-red-400' :
+                      'bg-gray-500/20 text-gray-400'
+                    }`}>
                       {mod.status}
-                    </Badge>
+                    </span>
                   </div>
-                  <div className="text-sm text-muted-foreground">{mod.activity}</div>
+                  <div className="text-xs text-gray-500">{mod.activity}</div>
                 </div>
               </div>
               <div className="flex items-center gap-3">
                 <div className="text-right">
-                  <div className="font-medium text-sm">{mod.messages.toLocaleString()} msgs</div>
-                  <div className="text-xs text-muted-foreground">{mod.avgResponse}</div>
+                  <div className="text-white text-sm">{mod.messages.toLocaleString()}</div>
+                  <div className="text-xs text-gray-500">{mod.avgResponse}</div>
                 </div>
                 <Button
                   size="sm"
                   onClick={onActionComplete}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white"
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-3 py-1 h-auto"
                 >
-                  Assign Role
+                  Assign Discord Role
                 </Button>
               </div>
             </div>
-            {index < recommendedModerators.length - 1 && <Separator className="my-4" />}
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </BaseWidget>
   );

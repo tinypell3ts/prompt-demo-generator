@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Send, MessageCircle } from "lucide-react";
+import { Send } from "lucide-react";
 import BaseWidget from "./base-widget";
 
 export interface AIMessageWithActionProps {
@@ -16,43 +15,18 @@ export default function AIMessageWithAction({
   onActionComplete,
   variant = "default" 
 }: AIMessageWithActionProps) {
-  const getVariantConfig = () => {
-    switch (variant) {
-      case "success":
-        return { badgeText: "Success", badgeVariant: "default" as const };
-      case "warning":
-        return { badgeText: "Warning", badgeVariant: "secondary" as const };
-      case "info":
-        return { badgeText: "Info", badgeVariant: "outline" as const };
-      default:
-        return { badgeText: "Message", badgeVariant: "secondary" as const };
-    }
-  };
-
-  const config = getVariantConfig();
-
   return (
-    <BaseWidget 
-      title="AI Assistant" 
-      icon={MessageCircle} 
-      variant={variant}
-    >
+    <BaseWidget>
       <div className="space-y-4">
-        <div className="flex items-start gap-2">
-          <Badge variant={config.badgeVariant} className="text-xs">
-            {config.badgeText}
-          </Badge>
-        </div>
-        
-        <p className="text-sm leading-relaxed">{message}</p>
+        <p className="text-gray-300 text-sm leading-relaxed">{message}</p>
         
         <div className="flex justify-end">
           <Button 
             onClick={onActionComplete}
             size="sm"
-            className="flex items-center gap-2"
+            className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 h-auto"
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-3 h-3 mr-1" />
             {actionText}
           </Button>
         </div>

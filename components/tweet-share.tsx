@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Twitter, ExternalLink } from "lucide-react";
 import BaseWidget from "./base-widget";
 
@@ -32,16 +31,15 @@ export default function TweetShare({
   };
 
   return (
-    <BaseWidget title="Share on Social" icon={Twitter} variant="info">
+    <BaseWidget>
       <div className="space-y-4">
         <div className="flex items-center gap-2">
-          <Badge variant="outline" className="text-xs">
-            Ready to Share
-          </Badge>
+          <Twitter className="w-4 h-4 text-blue-400" />
+          <h3 className="text-white font-medium text-sm">Share on Social</h3>
         </div>
         
-        <div className="p-3 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800">
-          <p className="text-sm leading-relaxed italic">"{tweetText}"</p>
+        <div className="p-3 bg-gray-900/50 rounded-lg border border-gray-800">
+          <p className="text-gray-300 text-sm italic">"{tweetText}"</p>
         </div>
         
         <Button 

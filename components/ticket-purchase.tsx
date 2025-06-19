@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { CreditCard, Ticket } from "lucide-react";
+import { CreditCard } from "lucide-react";
 import BaseWidget from "./base-widget";
 
 interface TicketPurchaseProps {
@@ -18,31 +17,23 @@ export default function TicketPurchase({ title, description, price, onActionComp
   };
 
   return (
-    <BaseWidget title={title} icon={Ticket} variant="info">
+    <BaseWidget>
       <div className="space-y-4">
-        <div className="space-y-2">
-          <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
-        </div>
+        <h3 className="text-white font-medium text-sm">{title}</h3>
         
-        <div className="flex items-center justify-between p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
+        <p className="text-gray-400 text-sm leading-relaxed">{description}</p>
+        
+        <div className="flex items-center justify-between p-4 bg-blue-500/10 rounded-lg border border-blue-500/20">
           <div>
-            <h4 className="font-semibold text-lg">Total Price</h4>
-            <div className="flex items-center gap-2">
-              <Badge variant="outline" className="text-xs">
-                Early Bird
-              </Badge>
-              <span className="text-xs text-muted-foreground">Limited time offer</span>
-            </div>
+            <h4 className="text-white font-medium">Total Price</h4>
+            <span className="text-blue-400 text-xs">Early Bird • Limited time offer</span>
           </div>
-          <div className="text-right">
-            <div className="text-2xl font-bold">€{price.toFixed(2)}</div>
-          </div>
+          <div className="text-white font-bold text-xl">€{price.toFixed(2)}</div>
         </div>
 
         <Button 
           onClick={handleApplePay}
           className="w-full bg-black hover:bg-gray-800 text-white"
-          size="lg"
         >
           <CreditCard className="w-4 h-4 mr-2" />
           Pay with Apple Pay
