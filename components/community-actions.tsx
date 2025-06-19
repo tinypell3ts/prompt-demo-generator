@@ -1,4 +1,9 @@
-import { Card } from "./ui/card";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { AlertTriangle, ArrowRight, Clock, MessageSquare, TrendingUp } from "lucide-react";
 
 export interface Action {
   id: string;
@@ -15,43 +20,97 @@ interface CommunityActionsProps {
 }
 
 export default function CommunityActions({ actions, onActionComplete }: CommunityActionsProps) {
-  const getTypeStyles = (type: Action['type']) => {
+  const getTypeConfig = (type: Action['type']) => {
     switch (type) {
       case 'alert':
-        return 'bg-red-100 text-red-800';
+        return {
+          variant: 'destructive' as const,
+          icon: AlertTriangle,
+          badgeVariant: 'destructive' as const,
+          badgeText: 'Alert'
+        };
       case 'positive':
-        return 'bg-green-100 text-green-800';
+        return {
+          variant: 'default' as const,
+          icon: TrendingUp,
+          badgeVariant: 'default' as const,
+          badgeText: 'Positive'
+        };
       case 'neutral':
-        return 'bg-gray-100 text-gray-800';
+        return {
+          variant: 'default' as const,
+          icon: MessageSquare,
+          badgeVariant: 'secondary' as const,
+          badgeText: 'Neutral'
+        };
       case 'action':
-        return 'bg-blue-100 text-blue-800';
+        return {
+          variant: 'default' as const,
+          icon: Clock,
+          badgeVariant: 'outline' as const,
+          badgeText: 'Action Required'
+        };
       default:
-        return 'bg-gray-100 text-gray-800';
+        return {
+          variant: 'default' as const,
+          icon: MessageSquare,
+          badgeVariant: 'secondary' as const,
+          badgeText: 'Info'
+        };
     }
   };
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold mb-6">Community Actions</h2>
-      {actions.map((action) => (
-        <Card key={action.id} className="p-4 bg-transparent">
-          <div className="flex items-start justify-between">
-            <div className="space-y-2 flex-1">
-              <div className="flex items-center gap-2">
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${getTypeStyles(action.type)}`}>
-                  {action.type.charAt(0).toUpperCase() + action.type.slice(1)}
-                </span>
-                <span className="text-sm text-gray-500">{action.time}</span>
-              </div>
-              <h3 className="font-semibold text-lg">{action.title}</h3>
-              <p className="text-gray-600">{action.description}</p>
-              <button className="mt-2 text-blue-600 hover:text-blue-800 font-medium" onClick={onActionComplete}>
-                {action.action} →
-              </button>
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <MessageSquare className="h-5 w-5" />
+          Community Actions
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {actions.map((action, index) => {
+          const config = getTypeConfig(action.type);
+          const IconComponent = config.icon;
+          
+          return (
+            <div key={action.id}>
+              <Alert className={action.type === 'alert' ? 'border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive' : ''}>
+                <IconComponent className="h-4 w-4" />
+                <div className="flex-1 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <AlertTitle className="flex items-center gap-2">
+                      {action.title}
+                      <Badge variant={config.badgeVariant} className="text-xs">
+                        {config.badgeText}
+                      </Badge>
+                    </AlertTitle>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Clock className="h-3 w-3" />
+                      {action.time}
+                    </div>
+                  </div>
+                  <AlertDescription className="text-sm leading-relaxed">
+                    {action.description}
+                  </AlertDescription>
+                  <div className="pt-2">
+                    <Button 
+                      variant={action.type === 'alert' ? 'destructive' : 'default'}
+                      size="sm"
+                      onClick={onActionComplete}
+                      className="group"
+                    >
+                      {action.action}
+                      <ArrowRight className="ml-2 h-3 w-3 transition-transform group-hover:translate-x-1" />
+                    </Button>
+                  </div>
+                </div>
+              </Alert>
+              {index < actions.length - 1 && <Separator className="my-4" />}
             </div>
-          </div>
-        </Card>
-      ))}
-    </div>
+          );
+        })}
+      </CardContent>
+    </Card>
   );
-} 
+}
