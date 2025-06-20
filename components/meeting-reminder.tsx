@@ -38,28 +38,28 @@ export default function MeetingReminder({
             <Calendar className="w-4 h-4 text-blue-400" />
           </div>
           <div>
-            <h3 className="text-white font-medium text-sm">Meeting Reminder</h3>
+            <h3 className="text-white dark:text-white light:text-gray-900 font-medium text-sm">Meeting Reminder</h3>
           </div>
         </div>
 
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <Clock className="w-4 h-4 text-gray-500" />
-            <span className="text-white text-sm font-medium">{meetingTitle}</span>
+            <Clock className="w-4 h-4 text-gray-500 dark:text-gray-500 light:text-gray-600" />
+            <span className="text-white dark:text-white light:text-gray-900 text-sm font-medium">{meetingTitle}</span>
           </div>
           
           <div className="flex items-center gap-2">
-            <Calendar className="w-4 h-4 text-gray-500" />
-            <span className="text-gray-400 text-sm">{meetingDate} at {meetingTime}</span>
+            <Calendar className="w-4 h-4 text-gray-500 dark:text-gray-500 light:text-gray-600" />
+            <span className="text-gray-400 dark:text-gray-400 light:text-gray-600 text-sm">{meetingDate} at {meetingTime}</span>
           </div>
 
           <div className="flex items-start gap-2">
-            <Users className="w-4 h-4 text-gray-500 mt-0.5" />
+            <Users className="w-4 h-4 text-gray-500 dark:text-gray-500 light:text-gray-600 mt-0.5" />
             <div>
-              <span className="text-gray-400 text-sm">Attendees:</span>
+              <span className="text-gray-400 dark:text-gray-400 light:text-gray-600 text-sm">Attendees:</span>
               <div className="mt-1">
                 {attendees.map((attendee, index) => (
-                  <div key={index} className="text-gray-400 text-sm">
+                  <div key={index} className="text-gray-400 dark:text-gray-400 light:text-gray-600 text-sm">
                     • {attendee}
                   </div>
                 ))}
@@ -68,12 +68,12 @@ export default function MeetingReminder({
           </div>
         </div>
 
-        <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-800">
-          <h4 className="text-white font-medium text-sm mb-2">Prepared Report</h4>
-          <p className="text-gray-400 text-sm mb-3">{reportContent}</p>
+        <div className="bg-gray-900/50 dark:bg-gray-900/50 light:bg-gray-50 rounded-lg p-4 border border-gray-800 dark:border-gray-800 light:border-gray-200">
+          <h4 className="text-white dark:text-white light:text-gray-900 font-medium text-sm mb-2">Prepared Report</h4>
+          <p className="text-gray-400 dark:text-gray-400 light:text-gray-600 text-sm mb-3">{reportContent}</p>
           
           <div className="flex items-center justify-between">
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-gray-500 dark:text-gray-500 light:text-gray-600">
               Report will be automatically sent before each meeting
             </span>
             <Button
@@ -86,8 +86,6 @@ export default function MeetingReminder({
             </Button>
           </div>
         </div>
-
-        
       </div>
     </BaseWidget>
   );

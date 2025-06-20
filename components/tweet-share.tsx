@@ -35,11 +35,11 @@ export default function TweetShare({
       <div className="space-y-4">
         <div className="flex items-center gap-2">
           <Twitter className="w-4 h-4 text-blue-400" />
-          <h3 className="text-white font-medium text-sm">Share on Social</h3>
+          <h3 className="text-white dark:text-white light:text-gray-900 font-medium text-sm">Share on Social</h3>
         </div>
         
-        <div className="p-3 bg-gray-900/50 rounded-lg border border-gray-800">
-          <p className="text-gray-300 text-sm italic">"{tweetText}"</p>
+        <div className="p-3 bg-gray-900/50 dark:bg-gray-900/50 light:bg-gray-50 rounded-lg border border-gray-800 dark:border-gray-800 light:border-gray-200">
+          <p className="text-gray-300 dark:text-gray-300 light:text-gray-700 text-sm italic">"{tweetText}"</p>
         </div>
         
         <Button 

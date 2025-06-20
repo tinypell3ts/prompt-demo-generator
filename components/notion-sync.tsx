@@ -30,7 +30,6 @@ export default function NotionSync({
       onSync();
     }
 
-
     setIsSyncing(false);
   };
 
@@ -44,8 +43,8 @@ export default function NotionSync({
               <img src="/icons/Notion-logo.svg" alt="Notion" width={16} height={16} />
             </div>
             <div>
-              <h3 className="text-white font-medium text-sm">Notion Document</h3>
-              <p className="text-gray-400 text-xs">Ready to sync</p>
+              <h3 className="text-white dark:text-white light:text-gray-900 font-medium text-sm">Notion Document</h3>
+              <p className="text-gray-400 dark:text-gray-400 light:text-gray-600 text-xs">Ready to sync</p>
             </div>
           </div>
           <Button
@@ -67,24 +66,24 @@ export default function NotionSync({
         </div>
 
         {/* Document Info */}
-        <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-800">
+        <div className="bg-gray-900/50 dark:bg-gray-900/50 light:bg-gray-50 rounded-lg p-4 border border-gray-800 dark:border-gray-800 light:border-gray-200">
           <div className="flex items-start gap-3">
             {/* Document Icon */}
-            <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center text-lg">
+            <div className="w-10 h-10 bg-gray-800 dark:bg-gray-800 light:bg-gray-100 rounded-lg flex items-center justify-center text-lg">
               {pageIcon}
             </div>
 
             {/* Document Details */}
             <div className="flex-1 min-w-0">
-              <h4 className="text-white font-medium text-sm truncate">
+              <h4 className="text-white dark:text-white light:text-gray-900 font-medium text-sm truncate">
                 {documentName}
               </h4>
               <div className="flex items-center gap-2 mt-1">
                 <div className="flex -space-x-1">
-                  <div className="w-5 h-5 rounded-full border-2 border-gray-900 bg-blue-500"></div>
-                  <div className="w-5 h-5 rounded-full border-2 border-gray-900 bg-green-500"></div>
+                  <div className="w-5 h-5 rounded-full border-2 border-gray-900 dark:border-gray-900 light:border-white bg-blue-500"></div>
+                  <div className="w-5 h-5 rounded-full border-2 border-gray-900 dark:border-gray-900 light:border-white bg-green-500"></div>
                 </div>
-                <span className="text-gray-400 text-xs">{lastUpdated}</span>
+                <span className="text-gray-400 dark:text-gray-400 light:text-gray-600 text-xs">{lastUpdated}</span>
               </div>
             </div>
           </div>
@@ -94,15 +93,15 @@ export default function NotionSync({
         <div className="flex items-center justify-between text-xs">
           <div className="flex items-center gap-2">
             <div className={`w-2 h-2 rounded-full ${isSyncing ? 'bg-yellow-400 animate-pulse' : 'bg-green-400'}`}></div>
-            <span className="text-gray-400">
+            <span className="text-gray-400 dark:text-gray-400 light:text-gray-600">
               {isSyncing ? 'Syncing document...' : 'Ready to sync'}
             </span>
           </div>
-          <span className="text-gray-500">
+          <span className="text-gray-500 dark:text-gray-500 light:text-gray-600">
             {isSyncing ? 'Please wait' : 'Click sync to update'}
           </span>
         </div>
       </div>
     </BaseWidget>
   );
-} 
+}

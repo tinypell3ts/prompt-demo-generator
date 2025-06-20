@@ -28,7 +28,7 @@ export default function TaskList({ tasks, onActionComplete }: TaskListProps) {
       case "Advanced":
         return 'bg-red-500/20 text-red-400';
       default:
-        return 'bg-gray-500/20 text-gray-400';
+        return 'bg-gray-500/20 text-gray-400 dark:text-gray-400 light:text-gray-600';
     }
   };
 
@@ -37,7 +37,7 @@ export default function TaskList({ tasks, onActionComplete }: TaskListProps) {
       <div className="space-y-4">
         <div className="flex items-center gap-2">
           <Code2 className="w-4 h-4 text-green-400" />
-          <h3 className="text-white font-medium text-sm">Open Source Tasks</h3>
+          <h3 className="text-white dark:text-white light:text-gray-900 font-medium text-sm">Open Source Tasks</h3>
         </div>
         
         <div className="space-y-4">
@@ -46,19 +46,19 @@ export default function TaskList({ tasks, onActionComplete }: TaskListProps) {
               <div className="flex items-start justify-between">
                 <div className="flex-1 space-y-2">
                   <div className="flex items-center gap-2">
-                    <h4 className="text-white font-medium text-sm">{task.title}</h4>
+                    <h4 className="text-white dark:text-white light:text-gray-900 font-medium text-sm">{task.title}</h4>
                     <span className={`text-xs px-2 py-0.5 rounded ${getDifficultyColor(task.difficulty)}`}>
                       {task.difficulty}
                     </span>
                   </div>
-                  <p className="text-gray-400 text-sm leading-relaxed">
+                  <p className="text-gray-400 dark:text-gray-400 light:text-gray-600 text-sm leading-relaxed">
                     {task.description}
                   </p>
                   <div className="flex items-center gap-4">
                     <span className="text-blue-400 text-sm font-medium">
                       {task.amount} {task.currency}
                     </span>
-                    <div className="flex items-center gap-1 text-xs text-gray-500">
+                    <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-500 light:text-gray-600">
                       <ExternalLink className="h-3 w-3" />
                       <span>{task.repository}</span>
                     </div>
@@ -72,7 +72,7 @@ export default function TaskList({ tasks, onActionComplete }: TaskListProps) {
                 </Button>
               </div>
               {index < tasks.length - 1 && (
-                <div className="border-b border-gray-800 my-4" />
+                <div className="border-b border-gray-800 dark:border-gray-800 light:border-gray-200 my-4" />
               )}
             </div>
           ))}

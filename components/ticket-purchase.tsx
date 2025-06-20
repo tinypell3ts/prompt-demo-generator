@@ -19,16 +19,16 @@ export default function TicketPurchase({ title, description, price, onActionComp
   return (
     <BaseWidget>
       <div className="space-y-4">
-        <h3 className="text-white font-medium text-sm">{title}</h3>
+        <h3 className="text-white dark:text-white light:text-gray-900 font-medium text-sm">{title}</h3>
         
-        <p className="text-gray-400 text-sm leading-relaxed">{description}</p>
+        <p className="text-gray-400 dark:text-gray-400 light:text-gray-600 text-sm leading-relaxed">{description}</p>
         
         <div className="flex items-center justify-between p-4 bg-blue-500/10 rounded-lg border border-blue-500/20">
           <div>
-            <h4 className="text-white font-medium">Total Price</h4>
+            <h4 className="text-white dark:text-white light:text-gray-900 font-medium">Total Price</h4>
             <span className="text-blue-400 text-xs">Early Bird • Limited time offer</span>
           </div>
-          <div className="text-white font-bold text-xl">€{price.toFixed(2)}</div>
+          <div className="text-white dark:text-white light:text-gray-900 font-bold text-xl">€{price.toFixed(2)}</div>
         </div>
 
         <Button 

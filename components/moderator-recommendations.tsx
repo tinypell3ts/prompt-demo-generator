@@ -46,8 +46,8 @@ export default function ModeratorRecommendations({ onActionComplete }: Props) {
     <BaseWidget>
       <div className="space-y-4">
         <div>
-          <h3 className="text-white font-medium text-sm mb-1">Recommended Moderators</h3>
-          <p className="text-gray-400 text-xs">
+          <h3 className="text-white dark:text-white light:text-gray-900 font-medium text-sm mb-1">Recommended Moderators</h3>
+          <p className="text-gray-400 dark:text-gray-400 light:text-gray-600 text-xs">
             Based on activity, message count, and response times
           </p>
         </div>
@@ -61,22 +61,22 @@ export default function ModeratorRecommendations({ onActionComplete }: Props) {
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-white text-sm font-medium">{mod.name}</span>
+                    <span className="text-white dark:text-white light:text-gray-900 text-sm font-medium">{mod.name}</span>
                     <span className={`text-xs px-2 py-0.5 rounded ${
                       mod.status === 'Positive' ? 'bg-green-500/20 text-green-400' :
                       mod.status === 'Negative' ? 'bg-red-500/20 text-red-400' :
-                      'bg-gray-500/20 text-gray-400'
+                      'bg-gray-500/20 text-gray-400 dark:text-gray-400 light:text-gray-600'
                     }`}>
                       {mod.status}
                     </span>
                   </div>
-                  <div className="text-xs text-gray-500">{mod.activity}</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-500 light:text-gray-600">{mod.activity}</div>
                 </div>
               </div>
               <div className="flex items-center gap-3">
                 <div className="text-right">
-                  <div className="text-white text-sm">{mod.messages.toLocaleString()}</div>
-                  <div className="text-xs text-gray-500">{mod.avgResponse}</div>
+                  <div className="text-white dark:text-white light:text-gray-900 text-sm">{mod.messages.toLocaleString()}</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-500 light:text-gray-600">{mod.avgResponse}</div>
                 </div>
                 <Button
                   size="sm"

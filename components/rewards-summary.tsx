@@ -13,20 +13,20 @@ export default function RewardSummary({ taskName, rewardAmount, currency }: Rewa
       <div className="space-y-4">
         <div className="flex items-center gap-2">
           <Award className="w-4 h-4 text-yellow-400" />
-          <h3 className="text-white font-medium text-sm">Task Summary</h3>
+          <h3 className="text-white dark:text-white light:text-gray-900 font-medium text-sm">Task Summary</h3>
         </div>
         
         <div className="space-y-3">
           <div>
-            <p className="text-gray-400 text-xs mb-1">Task Completed</p>
-            <p className="text-white text-sm font-medium">{taskName}</p>
+            <p className="text-gray-400 dark:text-gray-400 light:text-gray-600 text-xs mb-1">Task Completed</p>
+            <p className="text-white dark:text-white light:text-gray-900 text-sm font-medium">{taskName}</p>
           </div>
           
           <div className="bg-green-500/10 rounded-lg p-4 border border-green-500/20">
             <div className="flex items-center justify-between">
               <div>
-                <h4 className="text-white font-medium text-sm">Reward Earned</h4>
-                <p className="text-gray-400 text-xs">Payment processed successfully</p>
+                <h4 className="text-white dark:text-white light:text-gray-900 font-medium text-sm">Reward Earned</h4>
+                <p className="text-gray-400 dark:text-gray-400 light:text-gray-600 text-xs">Payment processed successfully</p>
               </div>
               <div className="text-right">
                 <div className="text-green-400 font-bold text-lg">

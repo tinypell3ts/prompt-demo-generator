@@ -33,7 +33,7 @@ export default function AIMessageWithAction({
   return (
     <BaseWidget>
       <div className="space-y-4">
-        <p className="text-gray-300 text-sm leading-relaxed">{message}</p>
+        <p className="text-gray-300 dark:text-gray-300 light:text-gray-700 text-sm leading-relaxed">{message}</p>
         
         <div className="flex justify-end">
           <Button 

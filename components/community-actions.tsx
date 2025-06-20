@@ -34,7 +34,7 @@ export default function CommunityActions({ actions, onActionComplete }: Communit
       case 'neutral':
         return {
           icon: MessageSquare,
-          color: 'text-gray-400',
+          color: 'text-gray-400 dark:text-gray-400 light:text-gray-600',
           bg: 'bg-gray-500/10'
         };
       case 'action':
@@ -46,7 +46,7 @@ export default function CommunityActions({ actions, onActionComplete }: Communit
       default:
         return {
           icon: MessageSquare,
-          color: 'text-gray-400',
+          color: 'text-gray-400 dark:text-gray-400 light:text-gray-600',
           bg: 'bg-gray-500/10'
         };
     }
@@ -67,10 +67,10 @@ export default function CommunityActions({ actions, onActionComplete }: Communit
                 </div>
                 <div className="flex-1 space-y-2">
                   <div className="flex items-center justify-between">
-                    <h3 className="font-medium text-white text-sm">{action.title}</h3>
-                    <span className="text-xs text-gray-500">{action.time}</span>
+                    <h3 className="font-medium text-white dark:text-white light:text-gray-900 text-sm">{action.title}</h3>
+                    <span className="text-xs text-gray-500 dark:text-gray-500 light:text-gray-600">{action.time}</span>
                   </div>
-                  <p className="text-sm text-gray-400 leading-relaxed">
+                  <p className="text-sm text-gray-400 dark:text-gray-400 light:text-gray-600 leading-relaxed">
                     {action.description}
                   </p>
                   <Button 
@@ -84,7 +84,7 @@ export default function CommunityActions({ actions, onActionComplete }: Communit
                 </div>
               </div>
               {index < actions.length - 1 && (
-                <div className="border-b border-gray-800 my-4" />
+                <div className="border-b border-gray-800 dark:border-gray-800 light:border-gray-200 my-4" />
               )}
             </div>
           );

@@ -51,12 +51,8 @@ export default function TransactionCard({
             </div>
             <span className="text-green-400 text-sm font-medium">Transaction Successful!</span>
           </div>
-          <span className="text-gray-500 text-xs">{timestamp}</span>
+          <span className="text-gray-500 dark:text-gray-500 light:text-gray-600 text-xs">{timestamp}</span>
         </div>
-
-
-
-
 
         <div className="space-y-3">
           {recipients.map((recipient, index) => (
@@ -64,20 +60,20 @@ export default function TransactionCard({
               <div className="flex items-center gap-2">
                 <div className="h-6 w-6 rounded-full bg-gradient-to-r from-green-300 via-blue-500 to-purple-600" />
                 <div className="flex flex-col">
-                  <span className="text-gray-300 text-sm">{recipient.name}</span>
-                  <span className="text-gray-500 text-xs font-mono">{recipient.address}</span>
+                  <span className="text-gray-300 dark:text-gray-300 light:text-gray-700 text-sm">{recipient.name}</span>
+                  <span className="text-gray-500 dark:text-gray-500 light:text-gray-600 text-xs font-mono">{recipient.address}</span>
                 </div>
               </div>
-              <span className="text-gray-300 text-sm font-medium">
+              <span className="text-gray-300 dark:text-gray-300 light:text-gray-700 text-sm font-medium">
                 {recipient.amount} {currency}
               </span>
             </div>
           ))}
         </div>
 
-        <div className="flex items-center justify-between pt-2 border-t border-gray-800">
-          <span className="text-gray-400 text-sm">Total Amount</span>
-          <div className="text-white font-bold text-lg">
+        <div className="flex items-center justify-between pt-2 border-t border-gray-800 dark:border-gray-800 light:border-gray-200">
+          <span className="text-gray-400 dark:text-gray-400 light:text-gray-600 text-sm">Total Amount</span>
+          <div className="text-white dark:text-white light:text-gray-900 font-bold text-lg">
             {totalAmount} {currency}
           </div>
         </div>
@@ -85,7 +81,7 @@ export default function TransactionCard({
         <Button
           onClick={handleViewTransaction}
           variant="outline"
-          className="w-full border-gray-700 text-gray-400 hover:bg-gray-800"
+          className="w-full border-gray-700 dark:border-gray-700 light:border-gray-300 text-gray-400 dark:text-gray-400 light:text-gray-600 hover:bg-gray-800 dark:hover:bg-gray-800 light:hover:bg-gray-50"
         >
           View Transaction
         </Button>

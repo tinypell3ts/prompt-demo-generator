@@ -93,7 +93,6 @@ export default function TwitterSpace({
           </div>
         </div>
 
-
         {/* Live Indicator */}
         <div className="flex items-center gap-2 pt-2">
           <div className="flex items-center gap-1">
@@ -104,4 +103,4 @@ export default function TwitterSpace({
       </div>
     </BaseWidget>
   );
-} 
+}

@@ -68,7 +68,7 @@ export default function RewardRecommendations({
   const getPlatformIcon = (platform: string) => {
     switch (platform) {
       case "github":
-        return <Github className="w-4 h-4 text-gray-400" />;
+        return <Github className="w-4 h-4 text-gray-400 dark:text-gray-400 light:text-gray-600" />;
       case "discord":
         return <BsDiscord className="w-4 h-4 text-purple-400" />;
       case "telegram":
@@ -101,8 +101,8 @@ export default function RewardRecommendations({
               <Award className="w-4 h-4 text-yellow-400" />
             </div>
             <div>
-              <h3 className="text-white font-medium text-sm">Reward Recommendations</h3>
-              <p className="text-gray-400 text-xs mt-0.5">Based on community contributions</p>
+              <h3 className="text-white dark:text-white light:text-gray-900 font-medium text-sm">Reward Recommendations</h3>
+              <p className="text-gray-400 dark:text-gray-400 light:text-gray-600 text-xs mt-0.5">Based on community contributions</p>
             </div>
           </div>
           <Button
@@ -119,7 +119,7 @@ export default function RewardRecommendations({
           {contributors.map((contributor, index) => (
             <div
               key={index}
-              className="bg-gray-900/50 rounded-lg p-4 border border-gray-800 space-y-3"
+              className="bg-gray-900/50 dark:bg-gray-900/50 light:bg-gray-50 rounded-lg p-4 border border-gray-800 dark:border-gray-800 light:border-gray-200 space-y-3"
             >
               <div className="flex items-start justify-between">
                 <div className="flex items-start gap-3">
@@ -128,27 +128,26 @@ export default function RewardRecommendations({
                     <div className={`w-8 h-8 ${getPlatformColor(contributor.platform)} rounded-full flex items-center justify-center text-white text-sm font-medium`}>
                       {contributor.avatar}
                     </div>
-                    <div className="absolute -bottom-1 -right-1 p-1 bg-gray-900 rounded-full">
+                    <div className="absolute -bottom-1 -right-1 p-1 bg-gray-900 dark:bg-gray-900 light:bg-white rounded-full">
                       {getPlatformIcon(contributor.platform)}
                     </div>
                   </div>
 
                   {/* Contributor Info */}
                   <div className="flex-1">
-                    <h4 className="text-white text-sm font-medium">{contributor.name}</h4>
-                    <p className="text-gray-400 text-sm mt-1">{contributor.contribution}</p>
+                    <h4 className="text-white dark:text-white light:text-gray-900 text-sm font-medium">{contributor.name}</h4>
+                    <p className="text-gray-400 dark:text-gray-400 light:text-gray-600 text-sm mt-1">{contributor.contribution}</p>
                     {contributor.contributionMetrics && (
-                      <p className="text-gray-500 text-xs mt-1">{contributor.contributionMetrics}</p>
+                      <p className="text-gray-500 dark:text-gray-500 light:text-gray-600 text-xs mt-1">{contributor.contributionMetrics}</p>
                     )}
                   </div>
                 </div>
-
               </div>
 
               {/* Platform-specific metrics could go here */}
-              <div className="pt-2 border-t border-gray-800">
+              <div className="pt-2 border-t border-gray-800 dark:border-gray-800 light:border-gray-200">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-500">Recommended based on recent activity</span>
+                  <span className="text-xs text-gray-500 dark:text-gray-500 light:text-gray-600">Recommended based on recent activity</span>
                 </div>
               </div>
             </div>
@@ -156,22 +155,22 @@ export default function RewardRecommendations({
         </div>
 
         {/* Summary Footer */}
-        <div className="flex items-center justify-between pt-4 border-t border-gray-800">
-          <div className="text-xs text-gray-500">
+        <div className="flex items-center justify-between pt-4 border-t border-gray-800 dark:border-gray-800 light:border-gray-200">
+          <div className="text-xs text-gray-500 dark:text-gray-500 light:text-gray-600">
             <p>Total Rewards: {contributors.reduce((sum, c) => sum + parseInt(c.recommendedReward), 0)} $OPEN</p>
             <p className="mt-0.5">Across {contributors.length} contributors</p>
           </div>
-          <div className="flex items-center gap-2 text-xs text-gray-400">
+          <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-400 light:text-gray-600">
             <div className="flex items-center gap-1">
               <Github className="w-3 h-3" />
               <span>GitHub</span>
             </div>
-            <div className="w-1 h-1 bg-gray-700 rounded-full"></div>
+            <div className="w-1 h-1 bg-gray-700 dark:bg-gray-700 light:bg-gray-300 rounded-full"></div>
             <div className="flex items-center gap-1">
               <BsDiscord className="w-3 h-3" />
               <span>Discord</span>
             </div>
-            <div className="w-1 h-1 bg-gray-700 rounded-full"></div>
+            <div className="w-1 h-1 bg-gray-700 dark:bg-gray-700 light:bg-gray-300 rounded-full"></div>
             <div className="flex items-center gap-1">
               <BsTelegram className="w-3 h-3" />
               <span>Telegram</span>
@@ -181,4 +180,4 @@ export default function RewardRecommendations({
       </div>
     </BaseWidget>
   );
-} 
+}
