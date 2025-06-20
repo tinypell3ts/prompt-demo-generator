@@ -8,6 +8,7 @@ import { ChevronRight, Settings } from "lucide-react";
 import type { default as React } from "react";
 import { Suspense, lazy, useCallback, useEffect, useRef, useState } from "react";
 import { LoadingSpinner } from "./loading-spinner";
+import { useTheme } from "./theme-provider";
 
 interface Message {
   id: number;
@@ -69,6 +70,7 @@ export default function ChatInterface() {
   const [isLoading, setIsLoading] = useState(false);
   const [isProcessingAutoMessages, setIsProcessingAutoMessages] = useState(false);
   const { toast } = useToast();
+  const { theme } = useTheme();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -431,11 +433,15 @@ export default function ChatInterface() {
   console.log("Rendering chatMessages:", chatMessages);
 
   return (
-    <div className="min-h-screen h-screen p-4 flex flex-col items-center justify-center text-white">
-      <Card className="w-full max-w-2xl h-[90%] flex flex-col p-6 shadow-xl rounded-xl border-0">
+    <div className="min-h-screen h-screen p-4 flex flex-col items-center justify-center text-white dark:text-white light:text-gray-900">
+      <Card className={`w-full max-w-2xl h-[90%] flex flex-col p-6 rounded-xl border-0 ${
+        theme === 'light' 
+          ? 'bg-white shadow-2xl shadow-gray-300/50' 
+          : 'bg-card shadow-xl'
+      }`}>
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-[#222222] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full bg-[#222222] dark:bg-[#222222] light:bg-gray-100 flex items-center justify-center">
               <div className="w-4 h-4 rounded-full bg-gradient-to-r from-purple-500 to-blue-500" />
             </div>
           </div>
@@ -446,8 +452,11 @@ export default function ChatInterface() {
               <div key={message.id} className="space-y-4">
                 <div className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}>
                   <div
-                    className={`max-w-[85%] rounded-2xl ${message.type === "user" ? "bg-[#222222] text-black px-6 py-3" : "text-black"
-                      }  ${message.message.type === "component" ? "w-full max-w-full" : ""}`}
+                    className={`max-w-[85%] rounded-2xl ${
+                      message.type === "user" 
+                        ? "bg-[#222222] dark:bg-[#222222] light:bg-gray-100 text-white dark:text-white light:text-gray-900 px-6 py-3" 
+                        : "text-black dark:text-black light:text-gray-900"
+                    } ${message.message.type === "component" ? "w-full max-w-full" : ""}`}
                   >
                     {message.message.type === "text" && (
                       <div className="whitespace-pre-wrap font-sans animate-fade-in">{message.message.content}</div>
@@ -476,7 +485,7 @@ export default function ChatInterface() {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             placeholder={"Type your message..."}
-            className="w-full bg-[#222222] text-white rounded-xl py-4 px-12 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full bg-[#222222] dark:bg-[#222222] light:bg-gray-100 text-white dark:text-white light:text-gray-900 rounded-xl py-4 px-12 focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
           <Button type="submit" size="icon" variant="ghost" className="absolute right-2 top-1/2 -translate-y-1/2">
             <ChevronRight className="w-5 h-5 text-gray-400" />

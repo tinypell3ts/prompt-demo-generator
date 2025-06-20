@@ -103,6 +103,20 @@ body {
   @apply text-gray-300 text-sm;
 }
 
+/* Light mode toast styles */
+.light .discord-toast {
+  @apply bg-white border-gray-200 text-gray-900;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.light .discord-toast [data-title] {
+  @apply text-gray-900 font-semibold text-sm;
+}
+
+.light .discord-toast [data-description] {
+  @apply text-gray-600 text-sm;
+}
+
 /* Position toasts at top center */
 [data-sonner-toaster] {
   position: fixed !important;
