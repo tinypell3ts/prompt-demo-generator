@@ -485,13 +485,13 @@ export default function ChatInterface() {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             placeholder={"Type your message..."}
-            className="w-full bg-[#222222] dark:bg-[#222222] light:bg-gray-100 text-white dark:text-white light:text-gray-900 rounded-xl py-4 px-12 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full bg-[#222222] dark:bg-[#222222] light:bg-gray-50 text-white dark:text-white light:text-gray-900 rounded-xl py-4 px-12 focus:outline-none focus:ring-2 focus:ring-purple-500 light:border light:border-gray-200"
           />
           <Button type="submit" size="icon" variant="ghost" className="absolute right-2 top-1/2 -translate-y-1/2">
-            <ChevronRight className="w-5 h-5 text-gray-400" />
+            <ChevronRight className="w-5 h-5 text-gray-400 dark:text-gray-400 light:text-gray-600" />
           </Button>
           <Button size="icon" variant="ghost" className="absolute left-2 top-1/2 -translate-y-1/2">
-            <Settings className="w-5 h-5 text-gray-400" />
+            <Settings className="w-5 h-5 text-gray-400 dark:text-gray-400 light:text-gray-600" />
           </Button>
         </form>
       </Card>
