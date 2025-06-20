@@ -60,7 +60,7 @@
     "messages": [
       {
         "type": "text",
-        "content": "Your moderation response times are increasing due to a higher volume of reports and limited moderator availability during peak hours"
+        "content": "Your moderation response times are increasing due to a higher volume of reports and limited moderator availability during peak hours."
       }
     ]
   },
@@ -165,7 +165,7 @@
     "role": "user",
     "message": {
       "type": "text",
-      "content": "Yes, I'm going to send a community health report to my manager"
+      "content": "Thanks, what else should I know about?"
     }
   },
   {
@@ -182,7 +182,7 @@
     "role": "user",
     "message": {
       "type": "text",
-      "content": "Yes, I'm going to send a community health report to my manager"
+      "content": "Looks good! What else should I know about?"
     }
   },
   {
@@ -191,7 +191,7 @@
     "messages": [
       {
         "type": "text",
-        "content": "Also, Feature X is being discussed a lot in the community lately. There's been a 40% increase in mentions and the sentiment is overwhelmingly positive. Maybe it's time to do a Twitter Spaces to dive deeper into this topic?"
+        "content": "Feature X is being discussed a lot in the community lately. There's been a 40% increase in mentions and the sentiment is overwhelmingly positive. Maybe it's time to do a Twitter Spaces to dive deeper into this topic?"
       }
     ]
   },
@@ -199,7 +199,7 @@
     "role": "user",
     "message": {
       "type": "text",
-      "content": "Setup Twitter space"
+      "content": "Awesome! Let's do it! Ping my team in Slack so they know about it."
     }
   },
   {
@@ -207,7 +207,7 @@
     "thinkingTime": 4000,
     "toastTriggers": [
       {
-        "triggerText": "Perfect! I've scheduled a Twitter Spaces for Feature X discussion. Here are the details:\n\n🎙️ **Host:** You\n👥 **Co-hosts:** @SarahChen, @MikeRodriguez (they've been leading the Feature X discussions)\n📝 **Topic:** Deep dive into Feature X - community feedback and roadmap\n\nI've also sent out a community announcement and pinned it to the #feature-requests channel. The event is set to go live in 24 hours!",
+        "triggerText": "Perfect! I've scheduled a Twitter Spaces for Feature X discussion. Here are the details:",
         "toastMessage": "Twitter Spaces scheduled: Feature X discussion in 24 hours",
         "toastType": "twitter"
       }
@@ -215,7 +215,7 @@
     "messages": [
       {
         "type": "text",
-        "content": "Perfect! I've scheduled a Twitter Spaces for Feature X discussion. Here are the details:\n\n🎙️ **Host:** You\n👥 **Co-hosts:** @SarahChen, @MikeRodriguez (they've been leading the Feature X discussions)\n📝 **Topic:** Deep dive into Feature X - community feedback and roadmap\n\nI've also sent out a community announcement and pinned it to the #feature-requests channel. The event is set to go live in 24 hours!"
+        "content": "Perfect! I've scheduled a Twitter Spaces for Feature X discussion. Here are the details:"
       }
     ]
   },
@@ -239,33 +239,20 @@
   },
   {
     "role": "assistant",
-    "thinkingTime": 1200,
+    "thinkingTime": 1000,
     "messages": [
       {
-        "type": "component",
-        "componentName": "RewardSummary",
-        "props": {
-          "title": "Top Contributors This Week",
-          "contributors": [
-            {
-              "name": "Sarah Chen",
-              "contribution": "Led Feature X discussions",
-              "reward": "50 $OPEN"
-            },
-            {
-              "name": "Mike Rodriguez",
-              "contribution": "High engagement in help channels",
-              "reward": "30 $OPEN"
-            },
-            {
-              "name": "Alex Thompson",
-              "contribution": "Quick response moderator",
-              "reward": "20 $OPEN"
-            }
-          ]
-        }
+        "type": "text",
+        "content": "I've also pinged @kyleh and @jason in Slack to join as co-hosts. You are on a roll! Need anything else?"
       }
     ]
+  },
+  {
+    "role": "user",
+    "message": {
+      "type": "text",
+      "content": "Yes, I want to reward my top contributors in this community this week."
+    }
   },
   {
     "role": "assistant",
@@ -273,7 +260,7 @@
     "messages": [
       {
         "type": "text",
-        "content": "I've analyzed recent community contributions across GitHub, Discord, and Telegram. Here are the top contributors who deserve recognition for their valuable work:"
+        "content": "I've analysed recent community contributions across GitHub, Discord, and Telegram. Here are the top contributors who deserve recognition for their valuable work:"
       }
     ]
   },
@@ -312,6 +299,107 @@
             }
           ]
         }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "message": {
+      "type": "text",
+      "content": "Reward all"
+    }
+  },
+  {
+    "role": "assistant",
+    "thinkingTime": 1000,
+    "messages": [
+      {
+        "type": "component",
+        "componentName": "RewardReceipt",
+        "props": {
+          "recipient": "Sarah Chen",
+          "amount": "50 $OPEN",
+          "reason": "For leading productive Feature X discussions"
+        }
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "thinkingTime": 1000,
+    "messages": [
+      {
+        "type": "text",
+        "content": "I've sent the rewards to the recipients. Anything else you need?"
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "message": {
+      "type": "text",
+      "content": "I've added a new document called Summer Marketing Campaign, please add to your brain"
+    }
+  },
+  {
+    "role": "assistant",
+    "thinkingTime": 1000,
+    "messages": [
+      {
+        "type": "text",
+        "content": "I've found your Notion document."
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "thinkingTime": 2000,
+    "messages": [
+      {
+        "type": "text",
+        "content": "Let me sync it to update my knowledge base."
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "thinkingTime": 2000,
+    "messages": [
+      {
+        "type": "component",
+        "componentName": "NotionSync",
+        "props": {
+          "documentName": "Summer Marketing Campaign",
+          "lastUpdated": "Last edited 2 hours ago",
+          "pageIcon": "📈"
+        }
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "thinkingTime": 1500,
+    "messages": [
+      {
+        "type": "text",
+        "content": "All done! I have knowledge of your Summer Marketing Campaign. Looks awesome!"
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "message": {
+      "type": "text",
+      "content": "Thanks! You are awesome!"
+    }
+  },
+  {
+    "role": "assistant",
+    "thinkingTime": 1000,
+    "messages": [
+      {
+        "type": "text",
+        "content": "Yeah, I know. I'm a genius. See you soon! 😘"
       }
     ]
   }

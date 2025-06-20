@@ -106,9 +106,8 @@ export default function RewardRecommendations({
             </div>
           </div>
           <Button
-            onClick={handleRewardAll}
-            size="sm"
-            className="bg-yellow-600 hover:bg-yellow-700 text-white text-xs px-3 py-1 h-auto"
+            className="bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-1 h-auto"
+            onClick={onActionComplete}
           >
             <Send className="w-3 h-3 mr-1" />
             Reward All
@@ -144,18 +143,6 @@ export default function RewardRecommendations({
                   </div>
                 </div>
 
-                {/* Reward Amount and Button */}
-                <div className="flex flex-col items-end gap-2">
-                  <span className="text-yellow-400 font-medium text-sm">{contributor.recommendedReward}</span>
-                  <Button
-                    onClick={() => handleRewardSingle(contributor)}
-                    variant="outline"
-                    size="sm"
-                    className="border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/10 text-xs px-3 py-1 h-auto"
-                  >
-                    Send Reward
-                  </Button>
-                </div>
               </div>
 
               {/* Platform-specific metrics could go here */}

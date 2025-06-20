@@ -35,6 +35,7 @@ const componentMap = {
   ViewReport: lazy(() => import("@/components/view-report")),
   TwitterSpace: lazy(() => import("@/components/twitter-space")),
   RewardRecommendations: lazy(() => import("@/components/reward-recommendations")),
+  NotionSync: lazy(() => import("@/components/notion-sync")),
 };
 
 const DynamicComponent: React.FC<{
@@ -203,6 +204,12 @@ export default function ChatInterface() {
               title: "Trending",
               description: trigger.toastMessage,
               className: "trending-toast",
+            });
+          } else if (trigger.toastType === "slack") {
+            toast({
+              title: "Slack",
+              description: trigger.toastMessage,
+              className: "slack-toast",
             });
           } else {
             toast({
@@ -401,11 +408,31 @@ export default function ChatInterface() {
     handleNextInteraction();
   }, [interactions, currentInteractionIndex, chatMessages, handleToastTriggers]);
 
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.code === 'Space' && document.activeElement?.tagName !== 'INPUT') {
+        event.preventDefault();
+
+        for (let i = currentInteractionIndex; i < interactions.length; i++) {
+          const interaction = interactions[i];
+          if (interaction.role === 'user') {
+            setInputValue(interaction.message.content);
+            handleSubmit(new Event('submit') as any);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [currentInteractionIndex, interactions, handleSubmit]);
+
   console.log("Rendering chatMessages:", chatMessages);
 
   return (
     <div className="min-h-screen h-screen p-4 flex flex-col items-center justify-center text-white">
-      <Card className="w-full max-w-2xl h-[90%] flex flex-col p-6 bg-[#111111] shadow-xl rounded-xl border-0">
+      <Card className="w-full max-w-2xl h-[90%] flex flex-col p-6 shadow-xl rounded-xl border-0">
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-[#222222] flex items-center justify-center">
@@ -419,7 +446,7 @@ export default function ChatInterface() {
               <div key={message.id} className="space-y-4">
                 <div className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}>
                   <div
-                    className={`max-w-[85%] rounded-2xl ${message.type === "user" ? "bg-[#222222] text-white px-6 py-3" : "text-white"
+                    className={`max-w-[85%] rounded-2xl ${message.type === "user" ? "bg-[#222222] text-black px-6 py-3" : "text-black"
                       }  ${message.message.type === "component" ? "w-full max-w-full" : ""}`}
                   >
                     {message.message.type === "text" && (
